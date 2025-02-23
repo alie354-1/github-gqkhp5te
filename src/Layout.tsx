@@ -107,8 +107,12 @@ export default function Layout() {
   }, [user]);
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate('/login');
+    try {
+      await useAuthStore.getState().signOut();
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const navigation: NavItem[] = [
