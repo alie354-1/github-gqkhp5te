@@ -192,7 +192,11 @@ export default function Layout() {
   };
 
   const renderMobileNavItem = (item: NavItem) => {
-    if (!item.isEnabled) {
+    const flag = item.featureFlag ? currentFeatureFlags[item.featureFlag] : { enabled: true, visible: true };
+    if (!flag?.visible) {
+      return null;
+    }
+    if (!flag?.enabled) {
       return (
         <Tooltip.Provider>
           <Tooltip.Root>
