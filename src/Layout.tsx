@@ -44,15 +44,17 @@ export default function Layout() {
   const { user, profile } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Temporary bypass of auth
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      const mockUser = {
+        id: '38d3420e-3811-4ba2-82b1-934f79d5c44b',
+        email: 'alie@jointhewheel.com',
+        role: 'authenticated'
+      };
+      useAuthStore.setState({ user: mockUser });
     }
-  }, [user, navigate]);
-
-  if (!user) {
-    return null;
-  }
+  }, [user]);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
