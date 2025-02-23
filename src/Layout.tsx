@@ -134,9 +134,8 @@ export default function Layout() {
     { name: 'Utilities', href: '#', icon: Wrench, featureFlag: 'utilities' },
     { name: 'Idea Hub', href: '/idea-hub', icon: Lightbulb, featureFlag: 'ideaHub' },
     { name: 'Finance Hub', href: '#', icon: PiggyBank, featureFlag: 'financeHub' },
-    { name: 'Settings', href: '/profile', icon: Settings, featureFlag: 'settings', children: [
-      ...(profile?.role === 'superadmin' ? [{ name: 'Admin Panel', href: '/admin', icon: Shield, featureFlag: 'adminPanel' }] : [])
-    ]},
+    { name: 'Settings', href: '/profile', icon: Settings, featureFlag: 'settings' },
+    { name: 'Admin Panel', href: '/admin', icon: Shield, featureFlag: 'adminPanel' },
   ];
 
   const renderNavItem = (item: NavItem) => {
