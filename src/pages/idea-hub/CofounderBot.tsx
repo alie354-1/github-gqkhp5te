@@ -340,7 +340,7 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                     });
                   } catch (error) {
                     console.error('Error:', error);
-                    setError('Failed to generate tasks');
+                    setError('Failed to generate tasks: ' + (error instanceof Error ? error.message : 'Unknown error'));
                   } finally {
                     setIsLoading(false);
                   }
