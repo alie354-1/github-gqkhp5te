@@ -25,8 +25,8 @@ import MarketResearch from './pages/idea-hub/MarketResearch';
 function App() {
   const { user } = useAuthStore();
 
-  // If user is not logged in, show login page
-  if (!user) {
+  // Temporarily bypassing login check for troubleshooting
+  if (false) {
     return (
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -74,12 +74,7 @@ function App() {
 }
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { user } = useAuthStore();
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
+  // Temporarily bypassing auth check
   return <>{children}</>;
 }
 
