@@ -12,21 +12,21 @@ export default function Login() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const checkAndRedirect = async () => {
-      if (user) {
-        console.log('Redirecting to dashboard...');
-        await navigate('/dashboard', { replace: true });
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        navigate('/dashboard', { replace: true });
       }
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
     };
-    checkAndRedirect();
-  }, [user, navigate]);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -60,7 +60,6 @@ export default function Login() {
               }
             }}
             onError={(error) => setError(error.message)}
-            redirectTo={`${window.location.origin}/dashboard`}
           />
         </div>
       </div>
