@@ -1,0 +1,50 @@
+bash: requireStack:: command not found
+/home/runner/workspace/src/lib/supabase.ts:4
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                    ^
+
+
+TypeError: Cannot read properties of undefined (reading 'VITE_SUPABASE_URL')
+    at <anonymous> (/home/runner/workspace/src/lib/supabase.ts:4:37)
+    at ModuleJob.run (node:internal/modules/esm/module_job:234:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:473:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:122:5)
+
+Node.js v20.18.1
+bash: src/lib/test-db.ts: Permission denied
+/home/runner/workspace/src/lib/supabase.ts:4
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                    ^
+
+
+TypeError: Cannot read properties of undefined (reading 'VITE_SUPABASE_URL')
+    at <anonymous> (/home/runner/workspace/src/lib/supabase.ts:4:37)
+    at ModuleJob.run (node:internal/modules/esm/module_job:234:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:473:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:122:5)
+
+Node.js v20.18.1
+/home/runner/workspace/src/lib/supabase.ts:4
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                    ^
+
+
+TypeError: Cannot read properties of undefined (reading 'VITE_SUPABASE_URL')
+    at <anonymous> (/home/runner/workspace/src/lib/supabase.ts:4:37)
+    at ModuleJob.run (node:internal/modules/esm/module_job:234:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:473:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:122:5)
+
+Node.js v20.18.1
+/home/runner/workspace/src/lib/supabase.ts:4
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+                                    ^
+
+
+TypeError: Cannot read properties of undefined (reading 'VITE_SUPABASE_URL')
+    at <anonymous> (/home/runner/workspace/src/lib/supabase.ts:4:37)
+    at ModuleJob.run (node:internal/modules/esm/module_job:234:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:473:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:122:5)
+
+Node.js v20.18.1
