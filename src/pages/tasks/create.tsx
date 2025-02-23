@@ -5,11 +5,11 @@ import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
 
 interface Task {
-  id: string;
+  id?: string;
   title: string;
   description: string;
-  priority: string;
-  status: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'todo';
   category: string;
   due_date: string;
 }
@@ -18,20 +18,23 @@ export default function CreateTask() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [tasks, setTasks] = useState<Task[]>([]);
-  
-  const { standupEntry, suggestedTasks } = location.state || {};
-
-  useEffect(() => {
-    if (suggestedTasks) {
-      setTasks(suggestedTasks);
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      title: 'New Task',
+      description: '',
+      priority: 'medium',
+      status: 'todo',
+      category: 'general',
+      due_date: new Date().toISOString().split('T')[0]
     }
-  }, [suggestedTasks]);
+  ]);
+
+  const { standupEntry } = location.state || {};
 
   const saveTasks = async () => {
     try {
       const { error } = await supabase
-        .from('standup_tasks')
+        .from('tasks')
         .insert(tasks.map(task => ({
           ...task,
           user_id: user?.id,
@@ -45,9 +48,28 @@ export default function CreateTask() {
     }
   };
 
+  const addNewTask = () => {
+    setTasks([...tasks, {
+      title: 'New Task',
+      description: '',
+      priority: 'medium',
+      status: 'todo',
+      category: 'general',
+      due_date: new Date().toISOString().split('T')[0]
+    }]);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl font-semibold mb-6">Generated Tasks</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-semibold">Tasks</h1>
+        <button
+          onClick={addNewTask}
+          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          Add Task
+        </button>
+      </div>
       <div className="space-y-4">
         {tasks.map((task, index) => (
           <div key={index} className="bg-white shadow rounded-lg p-6">
@@ -83,7 +105,7 @@ export default function CreateTask() {
                   value={task.priority}
                   onChange={(e) => {
                     const newTasks = [...tasks];
-                    newTasks[index] = { ...task, priority: e.target.value };
+                    newTasks[index] = { ...task, priority: e.target.value as 'low' | 'medium' | 'high' };
                     setTasks(newTasks);
                   }}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
