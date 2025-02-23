@@ -202,6 +202,9 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
     setIsSubmitting(true);
     setError('');
 
+    console.log('Submitting task:', simpleTask);
+    console.log('Current user:', user);
+
     try {
       if (!user?.id) {
         throw new Error('User not authenticated');
@@ -231,6 +234,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
 
       if (taskError) {
         console.error('Task creation error:', taskError);
+        console.error('Task creation error details:', taskError.details, taskError.hint, taskError.message);
         throw taskError;
       }
 
