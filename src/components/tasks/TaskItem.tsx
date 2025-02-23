@@ -429,14 +429,44 @@ const TaskItem: React.FC<TaskItemProps> = ({
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
                 {task.priority}
               </span>
-              {suggestedTask && onAddTask && (
-                <button
-                  onClick={() => onAddTask(task)}
-                  className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                >
-                  <Plus className="h-3 w-3 mr-1" />
-                  Add
-                </button>
+              {suggestedTask && onAddTask && !isEditing && (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 mr-2"
+                  >
+                    <Edit className="h-3 w-3 mr-1" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => onAddTask(task)}
+                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add
+                  </button>
+                </>
+              )}
+              {suggestedTask && onAddTask && isEditing && (
+                <>
+                  <button
+                    onClick={() => {
+                      onAddTask(editedTask);
+                      setIsEditing(false);
+                    }}
+                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 mr-2"
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    Save & Add
+                  </button>
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Cancel
+                  </button>
+                </>
               )}
               <button
                 onClick={() => setIsEditing(true)}
