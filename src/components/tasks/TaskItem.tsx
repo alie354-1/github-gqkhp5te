@@ -468,7 +468,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   </button>
                 </>
               )}
-              {!suggestedTask && !isEditing && (
+              {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
                   className="p-1 text-gray-400 hover:text-gray-500"
