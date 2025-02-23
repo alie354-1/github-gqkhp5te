@@ -79,18 +79,47 @@ export default function FeatureFlagsSettings() {
   const loadFeatureFlags = async () => {
     try {
       setIsLoading(true);
+      setError('');
       console.log('Loading feature flags...');
       
       // First try to get existing flags
       let { data, error } = await supabase
         .from('app_settings')
-        .select('*')
+        .select('value')
         .eq('key', 'feature_flags')
         .single();
 
       console.log('Initial query result:', { data, error });
 
-      if (error && error.code === 'PGRST116') {
+      // Handle case where flags don't exist yet
+      if (!data || error) {
+        console.log('Creating initial feature flags...');
+        const { error: insertError } = await supabase
+          .from('app_settings')
+          .insert({
+            key: 'feature_flags',
+            value: defaultFeatureFlags,
+            updated_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Error creating flags:', insertError);
+          setError('Failed to initialize feature flags');
+          setFlags(defaultFeatureFlags);
+          setFeatureFlags(defaultFeatureFlags);
+          return;
+        }
+
+        setFlags(defaultFeatureFlags);
+        setFeatureFlags(defaultFeatureFlags);
+        return;
+      }
+
+      // If we have data, use it
+      const flagData = data.value || defaultFeatureFlags;
+      console.log('Setting flags:', flagData);
+      setFlags(flagData);
+      setFeatureFlags(flagData);
         // Record not found, create default flags
         console.log('Creating default flags...');
         const { error: insertError } = await supabase
