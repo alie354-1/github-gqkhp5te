@@ -95,15 +95,23 @@ export default function FeatureFlagsSettings() {
     setSuccess('');
 
     try {
+      // Delete existing record first
+      await supabase
+        .from('app_settings')
+        .delete()
+        .eq('key', 'feature_flags');
+
+      // Insert new record
       const { error } = await supabase
         .from('app_settings')
-        .upsert({
+        .insert({
           key: 'feature_flags',
-          value: flags,
-          updated_at: new Date().toISOString()
+          value: flags
         });
 
       if (error) throw error;
+      
+      setFeatureFlags(flags);
       setSuccess('Feature flags updated successfully!');
     } catch (error: any) {
       console.error('Error saving feature flags:', error);
@@ -182,6 +190,23 @@ export default function FeatureFlagsSettings() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
+        {error && (
+          <p className="text-sm text-red-600">{error}</p>
+        )}
+        {success && (
+          <p className="text-sm text-green-600">{success}</p>
+        )}
+        <button
+          onClick={handleSave}
+          disabled={isLoading}
+          className="ml-auto inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+        >
+          <Save className="h-4 w-4 mr-2" />
+          {isLoading ? 'Saving...' : 'Save Changes'}
+        </button>
       </div>
     </div>
   );
