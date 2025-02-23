@@ -199,18 +199,28 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
 
   const handleSimpleTaskSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
 
     try {
-      const { data, error } = await supabase
+      const { data: createdTask, error: taskError } = await supabase
         .from('tasks')
-        .insert([{
-          ...simpleTask,
-          user_id: user?.id
-        }])
+        .insert({
+          title: simpleTask.title,
+          description: simpleTask.description,
+          priority: simpleTask.priority,
+          status: simpleTask.status,
+          category: simpleTask.category,
+          task_type: simpleTask.task_type,
+          estimated_hours: simpleTask.estimated_hours,
+          due_date: simpleTask.due_date,
+          user_id: user?.id,
+          assigned_to: user?.id
+        })
         .select()
         .single();
 
-      if (error) throw error;
+      if (taskError) throw taskError;
 
       setIsCreating(false);
       // Reset form
@@ -225,10 +235,14 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
         due_date: new Date().toISOString().split('T')[0]
       });
 
-      // Reload tasks (you can implement this through a callback if needed)
-      window.location.reload();
-    } catch (error) {
+      // Navigate back to dashboard after successful task creation
+      navigate('/dashboard');
+    } catch (error: any) {
       console.error('Error creating task:', error);
+      setError(error.message);
+      setIsSubmitting(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
