@@ -41,24 +41,31 @@ interface NavItem {
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, profile } = useAuthStore();
+  const { user, profile, featureFlags } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Temporary bypass of auth
-  useEffect(() => {
-    if (!user) {
-      const mockUser = {
-        id: '38d3420e-3811-4ba2-82b1-934f79d5c44b',
-        email: 'alie@jointhewheel.com',
-        role: 'authenticated'
-      };
-      useAuthStore.setState({ user: mockUser });
-    }
-  }, [user]);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const isAdmin = true; // Temporarily allow all users to see admin panel
+  const isAdmin = profile?.role === 'admin';
+
+  const defaultFeatureFlags = {
+    dashboard: { enabled: true, visible: true },
+    company: { enabled: true, visible: true },
+    messages: { enabled: true, visible: true },
+    community: { enabled: true, visible: true },
+    directory: { enabled: true, visible: true },
+    library: { enabled: false, visible: true },
+    marketplace: { enabled: false, visible: true },
+    legalHub: { enabled: false, visible: true },
+    devHub: { enabled: false, visible: true },
+    utilities: { enabled: false, visible: true },
+    ideaHub: { enabled: true, visible: true },
+    financeHub: { enabled: false, visible: true },
+    settings: { enabled: true, visible: true },
+    adminPanel: { enabled: true, visible: true }
+  };
+
+  const currentFeatureFlags = featureFlags || defaultFeatureFlags;
 
   useEffect(() => {
     const checkCompanyAccess = async () => {
@@ -129,7 +136,7 @@ export default function Layout() {
   ];
 
   const renderNavItem = (item: NavItem) => {
-    const flag = item.featureFlag ? featureFlags[item.featureFlag] : { enabled: true, visible: true };
+    const flag = item.featureFlag ? currentFeatureFlags[item.featureFlag] : { enabled: true, visible: true };
     if (!flag?.visible) {
       return null;
     }
