@@ -5,46 +5,52 @@ async function testDatabaseConnections() {
   console.log('Starting database connection tests...');
 
   try {
-    // Test 1: Auth Connection
-    const { data: authData, error: authError } = await supabase.auth.getSession();
-    console.log('\nAuth Test:');
-    if (authError) {
-      console.error('❌ Auth connection failed:', authError);
+    // Test 1: Basic Connection Test
+    console.log('\nBasic Connection Test:');
+    const { data: testData, error: testError } = await supabase
+      .from('profiles')
+      .select('count(*)');
+
+    if (testError) {
+      console.error('❌ Basic connection failed:', testError.message);
+      console.error('Error details:', testError);
     } else {
-      console.log('✅ Auth connection successful');
-      console.log('User:', authData.session?.user?.email);
+      console.log('✅ Basic connection successful');
+      console.log('Connection data:', testData);
     }
 
-    // Test 2: Profiles Table
+    // Test 2: Profiles Table Test
+    console.log('\nProfiles Table Test:');
     const { data: profileData, error: profileError } = await supabase
       .from('profiles')
-      .select('*')
+      .select('id, email, role')
       .limit(1);
     
-    console.log('\nProfiles Table Test:');
     if (profileError) {
-      console.error('❌ Profiles query failed:', profileError);
+      console.error('❌ Profiles query failed:', profileError.message);
+      console.error('Error details:', profileError);
     } else {
       console.log('✅ Profiles table accessible');
       console.log('Sample data:', profileData);
     }
 
-    // Test 3: Feature Flags Table
-    const { data: flagData, error: flagError } = await supabase
-      .from('feature_flags')
-      .select('*')
+    // Test 3: Companies Table Test
+    console.log('\nCompanies Table Test:');
+    const { data: companyData, error: companyError } = await supabase
+      .from('companies')
+      .select('id, name')
       .limit(1);
 
-    console.log('\nFeature Flags Table Test:');
-    if (flagError) {
-      console.error('❌ Feature flags query failed:', flagError);
+    if (companyError) {
+      console.error('❌ Companies query failed:', companyError.message);
+      console.error('Error details:', companyError);
     } else {
-      console.log('✅ Feature flags table accessible');
-      console.log('Sample data:', flagData);
+      console.log('✅ Companies table accessible');
+      console.log('Sample data:', companyData);
     }
 
   } catch (err) {
-    console.error('❌ Database connection test failed with error:', err);
+    console.error('❌ Unexpected error during database tests:', err);
   }
 }
 
