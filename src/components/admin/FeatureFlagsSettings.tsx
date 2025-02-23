@@ -129,9 +129,6 @@ export default function FeatureFlagsSettings() {
       setIsLoading(false);
     }
   };
-            value: defaultFeatureFlags,
-            updated_at: new Date().toISOString()
-          });
 
         if (insertError) {
           console.error('Error creating default flags:', insertError);
