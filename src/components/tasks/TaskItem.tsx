@@ -404,25 +404,36 @@ const TaskItem: React.FC<TaskItemProps> = ({
       <div className="p-4">
         <div>
           <div className="flex items-center justify-between">
-            <button
-              onClick={onToggleExpand}
-              className="flex items-center text-left flex-1"
-            >
-              {isExpanded ? (
-                <ChevronDown className="h-5 w-5 text-gray-400" />
-              ) : (
-                <ChevronRight className="h-5 w-5 text-gray-400" />
-              )}
-              <div className="ml-2">
-                <p className="text-sm font-medium text-gray-900">{task.title}</p>
-                {!isExpanded && (
-                  <div className="mt-1 flex items-center space-x-4 text-sm text-gray-500">
-                    <span>Type: {task.task_type}</span>
-                    <span>•</span>
-                    <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
-                  </div>
+            <div className="flex items-center justify-between flex-1">
+              <button
+                onClick={onToggleExpand}
+                className="flex items-center text-left"
+              >
+                {isExpanded ? (
+                  <ChevronDown className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 )}
-              </div>
+                <div className="ml-2">
+                  <p className="text-sm font-medium text-gray-900">{task.title}</p>
+                  {!isExpanded && (
+                    <div className="mt-1 flex items-center space-x-4 text-sm text-gray-500">
+                      <span>Type: {task.task_type}</span>
+                      <span>•</span>
+                      <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                    </div>
+                  )}
+                </div>
+              </button>
+              {!isEditing && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-1 text-gray-400 hover:text-gray-500"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
+              )}
+            </div>
             </button>
 
             <div className="flex items-center space-x-2">
