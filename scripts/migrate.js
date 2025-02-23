@@ -11,7 +11,7 @@ const { Pool } = pg;
 
 // Get database connection details from environment variables
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL.replace('.us-east-2', '-pooler.us-east-2'),
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
