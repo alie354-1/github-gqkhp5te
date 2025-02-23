@@ -298,9 +298,15 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                 </button>
               )}
               <button
-                onClick={async () => {
-                  await generateDebugTasks();
-                  navigate('/dashboard');
+                onClick={() => {
+                  const mockEntry = {
+                    accomplished: "Skipped standup",
+                    working_on: "Current tasks",
+                    blockers: "None",
+                    goals: "Complete tasks",
+                    answers: {}
+                  };
+                  navigate('/tasks/create', { state: { standupEntry: mockEntry } });
                 }}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
