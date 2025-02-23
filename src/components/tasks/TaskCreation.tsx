@@ -175,7 +175,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
       }
 
       // Create tasks
-      const { error: tasksError } = await supabase
+      const { data: createdTasks, error: tasksError } = await supabase
         .from('standup_tasks')
         .insert(
           selectedTasks.map(task => ({
@@ -227,7 +227,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
       console.log('Creating task:', taskData);
 
       const { data: createdTask, error: taskError } = await supabase
-        .from('tasks')
+        .from('standup_tasks')
         .insert(taskData)
         .select('*')
         .single();
