@@ -1,14 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Get environment variables, supporting both Vite and Node environments
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Environment variables:', {
-    url: !!supabaseUrl,
-    key: !!supabaseAnonKey
-  });
   throw new Error('Missing Supabase environment variables');
 }
 
@@ -32,23 +29,13 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   }
 });
 
-// Test database connection and schema
-console.log('Testing Supabase connection...');
-console.log('Database URL format:', supabaseUrl?.split('@')[1] || 'Not found');
-
+// Test database connection
 supabase.from('profiles').select('count', { count: 'exact', head: true })
   .then(response => {
     if (response.error) {
-      console.error('Database connection test failed:');
-      console.error('Error code:', response.error.code);
-      console.error('Error message:', response.error.message);
-      console.error('Error details:', response.error.details);
-      if (response.error.code === '42P01') {
-        console.error('Profiles table does not exist - migrations need to be run');
-      }
+      console.error('Database connection test failed:', response.error);
     } else {
-      console.log('Database connection and schema verified successfully');
-      console.log('Response:', response);
+      console.log('Database connection successful');
     }
   })
   .catch(err => {
