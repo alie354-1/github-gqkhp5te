@@ -25,16 +25,6 @@ import MarketResearch from './pages/idea-hub/MarketResearch';
 function App() {
   const { user } = useAuthStore();
 
-  // Temporarily bypassing login check for troubleshooting
-  if (false) {
-    return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-100">
       <Routes>
