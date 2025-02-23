@@ -1,0 +1,46 @@
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.293Z #__loadSession() end
+Auth event: INITIAL_SESSION
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.293Z INITIAL_SESSION callback id e3d256c9-fb89-4a73-822f-6718bdca9a9c session null
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.293Z #_acquireLock lock released for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.293Z #_useSession end
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.293Z #_acquireLock end
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_acquireLock lock acquired for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_useSession begin
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #__loadSession() begin
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #getSession() session from storage null
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #__loadSession() end
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_useSession end
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_acquireLock lock released for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_acquireLock end
+No initial session found
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #onAuthStateChange() registered callback with id 8932c55d-0c64-43d7-91b0-0ef612f684e6
+GoTrueClient@0 (2.67.3) 2025-02-23T16:49:30.294Z #_acquireLock begin -1
+featureFlags is not defined
+featureFlags is not defined
+The above error occurred in the <Layout> component:
+
+    at Layout (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/src/Layout.tsx:50:20)
+    at RenderedRoute (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4088:5)
+    at Routes (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4558:5)
+    at div
+    at App
+    at Router (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4501:15)
+    at BrowserRouter (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:5247:5)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at Layout (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/src/Layout.tsx:50:20)
+at RenderedRoute (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4088:5)
+at Routes (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4558:5)
+at div
+at App
+at Router (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:4501:15)
+at BrowserRouter (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=477efc96:5247:5)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://4c0520ac-63ae-4c5f-81fd-bd0932944e23-00-2iv9ylfzrlsbm.janeway.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
