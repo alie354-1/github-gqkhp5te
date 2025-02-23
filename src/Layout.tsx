@@ -27,7 +27,7 @@ import {
   UserCircle,
   Construction
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from './lib/supabase';
 
 interface NavItem {
   name: string;
