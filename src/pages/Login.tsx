@@ -48,9 +48,8 @@ export default function Login() {
 
           <Auth
             supabaseClient={supabase}
-            queryParams={{
-              skipVerification: 'true'
-            }}
+            onlyThirdPartyProviders={false}
+            redirectTo={window.location.origin}
             appearance={{ 
               theme: ThemeSupa,
               variables: {
