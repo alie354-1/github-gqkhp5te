@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuthStore } from './lib/store';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Directory from './pages/Directory';

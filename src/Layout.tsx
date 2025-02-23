@@ -42,13 +42,17 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, signOut } = useAuthStore();
-// Temporarily bypass auth checks
-const profile = { full_name: 'Test User', role: 'admin', avatar_url: null };
-const isAdmin = true;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const isAdmin = true;
+  const profile = {
+    id: user?.id,
+    full_name: user?.email?.split('@')[0] || 'User',
+    role: 'admin',
+    avatar_url: null
+  };
 
   useEffect(() => {
     const checkCompanyAccess = async () => {
