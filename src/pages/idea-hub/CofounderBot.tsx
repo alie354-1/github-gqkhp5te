@@ -12,7 +12,8 @@ import {
   AlertCircle,
   ArrowRight,
   ListChecks,
-  FileText
+  FileText,
+  Bug
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
@@ -75,6 +76,7 @@ export default function CofounderBot() {
   const [error, setError] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const [isSummarizing, setIsSummarizing] = useState(false);
+  const isSuperAdmin = user?.email === 'alie+1@jointhewheel.com';
 
   useEffect(() => {
     if (!user) {
@@ -85,11 +87,11 @@ export default function CofounderBot() {
   const handleNextSection = async () => {
     const sections = Object.keys(SECTION_TRANSITIONS) as Array<keyof typeof SECTION_TRANSITIONS>;
     const currentIndex = sections.indexOf(currentSection);
-    
+
     if (currentIndex < sections.length - 1) {
       const nextSection = sections[currentIndex + 1];
       setCurrentSection(nextSection);
-      
+
       // Add transition message
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -107,7 +109,7 @@ export default function CofounderBot() {
     setIsSummarizing(true);
     try {
       const { feedback, follow_up_questions } = await generateTasks(currentEntry, user?.id || '');
-      
+
       // Format feedback into a readable string
       const formattedFeedback = `🎯 Key Insights
 
@@ -188,7 +190,7 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
       section: currentSection
     };
     setMessages(prev => [...prev, userMessage]);
-    
+
     // Update current entry
     setCurrentEntry(prev => ({
       ...prev,
@@ -257,6 +259,18 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
 
   const handleExit = () => {
     navigate('/dashboard');
+  };
+
+  const generateDebugTasks = async () => {
+    const mockStandupEntry = {
+      accomplished: "Built user authentication system and fixed API endpoints",
+      working_on: "Implementing task management features and improving UI responsiveness",
+      blockers: "Need to resolve database performance issues",
+      goals: "Complete the MVP features by end of week"
+    };
+
+    const response = await generateTasks(mockStandupEntry, user?.id || '');
+    console.log('Generated debug tasks:', response);
   };
 
   return (
@@ -428,6 +442,8 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
           isOpen={showTaskPrompt}
           onClose={() => setShowTaskPrompt(false)}
           standupEntry={currentEntry}
+          isSuperAdmin={isSuperAdmin}
+          generateDebugTasks={generateDebugTasks}
         />
       </div>
     </div>
