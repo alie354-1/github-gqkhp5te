@@ -1,0 +1,36 @@
+[plugin:vite:react-babel] /home/runner/workspace/src/components/tasks/TaskItem.tsx: Unexpected token (486:15)
+  489 |                   onClick={() => onRemoveTask(task)}
+/home/runner/workspace/src/components/tasks/TaskItem.tsx:486:15
+484|                    </button>
+485|                  </>
+486|                )}
+   |                 ^
+487|                {!suggestedTask && onRemoveTask && (
+488|                  <button
+    at constructor (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:362:19)
+    at TypeScriptParserMixin.raise (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:3259:19)
+    at TypeScriptParserMixin.unexpected (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:3279:16)
+    at TypeScriptParserMixin.checkExpressionErrors (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:3666:12)
+    at TypeScriptParserMixin.parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10385:12)
+    at TypeScriptParserMixin.parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:9432:20)
+    at TypeScriptParserMixin.parseExpressionBase (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10309:23)
+    at /home/runner/workspace/node_modules/@babel/parser/lib/index.js:10305:39
+    at TypeScriptParserMixin.allowInAnd (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:11937:12)
+    at TypeScriptParserMixin.parseExpression (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10305:17)
+    at TypeScriptParserMixin.jsxParseExpressionContainer (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6679:31)
+    at TypeScriptParserMixin.jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6758:36)
+    at TypeScriptParserMixin.jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6745:32)
+    at TypeScriptParserMixin.jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6745:32)
+    at TypeScriptParserMixin.jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6745:32)
+    at TypeScriptParserMixin.jsxParseElementAt (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6745:32)
+    at TypeScriptParserMixin.jsxParseElement (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6796:17)
+    at TypeScriptParserMixin.parseExprAtom (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:6806:19)
+    at TypeScriptParserMixin.parseExprSubscripts (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10591:23)
+    at TypeScriptParserMixin.parseUpdate (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10576:21)
+    at TypeScriptParserMixin.parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10556:23)
+    at TypeScriptParserMixin.parseMaybeUnary (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:9483:18)
+    at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10410:61)
+    at TypeScriptParserMixin.parseExprOps (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10415:23)
+    at TypeScriptParserMixin.parseMaybeConditional (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10392:23)
+    at TypeScriptParserMixin.parseMaybeAssign (/home/runner/workspace/node_modules/@babel/parser/lib/index.js:10355:21)
+    at /home/runner/workspace/node_modules/@babel/parser/lib/index.js:9421:39
