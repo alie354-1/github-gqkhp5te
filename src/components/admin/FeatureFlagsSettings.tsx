@@ -13,16 +13,19 @@ interface FeatureFlags {
 }
 
 const defaultFeatureFlags: FeatureFlags = {
-  ideaHub: { enabled: true, visible: true },
-  community: { enabled: true, visible: true },
+  dashboard: { enabled: true, visible: true },
+  company: { enabled: true, visible: true },
   messages: { enabled: true, visible: true },
+  community: { enabled: true, visible: true },
   directory: { enabled: true, visible: true },
   library: { enabled: true, visible: true },
   marketplace: { enabled: true, visible: true },
   legalHub: { enabled: true, visible: true },
   devHub: { enabled: true, visible: true },
   utilities: { enabled: true, visible: true },
+  ideaHub: { enabled: true, visible: true },
   financeHub: { enabled: true, visible: true },
+  settings: { enabled: true, visible: true },
   adminPanel: { enabled: true, visible: true }
 };
 
