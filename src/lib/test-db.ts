@@ -13,10 +13,10 @@ async function testDatabaseConnections() {
 
     if (testError) {
       console.error('❌ Basic connection failed:', testError.message);
-      console.error('Error details:', testError);
+      console.error('Error details:', JSON.stringify(testError, null, 2));
     } else {
       console.log('✅ Basic connection successful');
-      console.log('Connection data:', testData);
+      console.log('Connection data:', JSON.stringify(testData, null, 2));
     }
 
     // Test 2: Profiles Table Test
@@ -28,10 +28,10 @@ async function testDatabaseConnections() {
     
     if (profileError) {
       console.error('❌ Profiles query failed:', profileError.message);
-      console.error('Error details:', profileError);
+      console.error('Error details:', JSON.stringify(profileError, null, 2));
     } else {
       console.log('✅ Profiles table accessible');
-      console.log('Sample data:', profileData);
+      console.log('Sample data:', JSON.stringify(profileData, null, 2));
     }
 
     // Test 3: Companies Table Test
@@ -43,15 +43,17 @@ async function testDatabaseConnections() {
 
     if (companyError) {
       console.error('❌ Companies query failed:', companyError.message);
-      console.error('Error details:', companyError);
+      console.error('Error details:', JSON.stringify(companyError, null, 2));
     } else {
       console.log('✅ Companies table accessible');
-      console.log('Sample data:', companyData);
+      console.log('Sample data:', JSON.stringify(companyData, null, 2));
     }
 
   } catch (err) {
     console.error('❌ Unexpected error during database tests:', err);
+    console.error('Full error:', JSON.stringify(err, null, 2));
   }
 }
 
+// Actually call the function
 testDatabaseConnections();
