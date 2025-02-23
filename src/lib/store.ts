@@ -32,18 +32,6 @@ interface FeatureFlags {
   adminPanel: FeatureFlag;
 }
 
-interface AuthState {
-  user: User | null;
-  profile: Profile | null;
-  isAdmin: boolean;
-  featureFlags: FeatureFlags;
-  setUser: (user: User | null) => void;
-  setProfile: (profile: Profile | null) => void;
-  setFeatureFlags: (flags: FeatureFlags) => void;
-  fetchProfile: (userId: string) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-
 const defaultFeatureFlags: FeatureFlags = {
   dashboard: { enabled: true, visible: true },
   company: { enabled: true, visible: true },
@@ -61,13 +49,30 @@ const defaultFeatureFlags: FeatureFlags = {
   adminPanel: { enabled: true, visible: true }
 };
 
+interface AuthState {
+  user: User | null;
+  profile: Profile | null;
+  isAdmin: boolean;
+  featureFlags: FeatureFlags;
+  setUser: (user: User | null) => void;
+  setProfile: (profile: Profile | null) => void;
+  setFeatureFlags: (flags: FeatureFlags) => void;
+  fetchProfile: (userId: string) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   profile: null,
   isAdmin: false,
   featureFlags: defaultFeatureFlags,
-  setUser: (user) => set({ user }),
-  setProfile: (profile) => set({ profile }),
+  setUser: (user) => {
+    set({ user });
+    if (user) {
+      useAuthStore.getState().fetchProfile(user.id);
+    }
+  },
+  setProfile: (profile) => set({ profile, isAdmin: profile?.role === 'admin' }),
   setFeatureFlags: (flags) => set({ featureFlags: flags }),
   fetchProfile: async (userId) => {
     try {
@@ -76,7 +81,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         .select('*')
         .eq('id', userId)
         .single();
-        
+      
       if (error) throw error;
       set({ profile, isAdmin: profile?.role === 'admin' });
     } catch (error) {
