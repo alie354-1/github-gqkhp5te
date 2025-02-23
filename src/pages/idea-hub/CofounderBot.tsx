@@ -298,10 +298,13 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                 </button>
               )}
               <button
-                onClick={() => navigate('/dashboard')}
+                onClick={async () => {
+                  await generateDebugTasks();
+                  navigate('/dashboard');
+                }}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
-                Skip Standup
+                Skip & Generate Tasks
               </button>
             </div>
           </div>
