@@ -314,15 +314,31 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
 
                   setIsLoading(true);
                   try {
-                    const response = await fetch('/api/generate-tasks', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
+                    // Temporary mock tasks until API is properly set up
+                    const suggestedTasks = [
+                      {
+                        id: 'task-1',
+                        title: 'Review current sprint goals',
+                        description: 'Review and align with sprint objectives',
+                        priority: 'medium',
+                        status: 'pending',
+                        category: 'planning',
+                        task_type: 'task',
+                        estimated_hours: 1,
+                        due_date: new Date().toISOString().split('T')[0]
                       },
-                      body: JSON.stringify(mockEntry)
-                    });
-
-                    const suggestedTasks = await response.json();
+                      {
+                        id: 'task-2',
+                        title: 'Update project documentation',
+                        description: 'Ensure all documentation is current',
+                        priority: 'medium',
+                        status: 'pending',
+                        category: 'documentation',
+                        task_type: 'task',
+                        estimated_hours: 2,
+                        due_date: new Date().toISOString().split('T')[0]
+                      }
+                    ];
                     navigate('/tasks/create', { 
                       state: { 
                         standupEntry: mockEntry,
