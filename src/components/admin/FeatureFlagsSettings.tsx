@@ -81,7 +81,7 @@ export default function FeatureFlagsSettings() {
       setIsLoading(true);
       setError('');
       console.log('Loading feature flags...');
-      
+
       // First try to get existing flags
       let { data, error } = await supabase
         .from('app_settings')
@@ -91,8 +91,7 @@ export default function FeatureFlagsSettings() {
 
       console.log('Initial query result:', { data, error });
 
-      // Handle case where flags don't exist yet
-      if (!data || error) {
+      if (!data) {
         console.log('Creating initial feature flags...');
         const { error: insertError } = await supabase
           .from('app_settings')
@@ -115,30 +114,7 @@ export default function FeatureFlagsSettings() {
         return;
       }
 
-      // If we have data, use it
-      const flagData = data.value || defaultFeatureFlags;
-      console.log('Setting flags:', flagData);
-      setFlags(flagData);
-      setFeatureFlags(flagData);
-    } catch (error) {
-      console.error('Error loading feature flags:', error);
-      setError('Failed to load feature flags');
-      setFlags(defaultFeatureFlags);
-      setFeatureFlags(defaultFeatureFlags);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-        if (insertError) {
-          console.error('Error creating default flags:', insertError);
-          setError('Failed to create default flags');
-        }
-        
-        setFlags(defaultFeatureFlags);
-        setFeatureFlags(defaultFeatureFlags);
-        return;
-      } else if (error) {
+      if (error) {
         console.error('Error fetching flags:', error);
         setError('Failed to load feature flags');
         setFlags(defaultFeatureFlags);
@@ -152,36 +128,7 @@ export default function FeatureFlagsSettings() {
       setFlags(flagData);
       setFeatureFlags(flagData);
 
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // No flags found, use defaults
-          const defaultFlags = {
-            ideaHub: { enabled: true, visible: true },
-            community: { enabled: true, visible: true },
-            messages: { enabled: true, visible: true },
-            directory: { enabled: true, visible: true },
-            library: { enabled: true, visible: true },
-            marketplace: { enabled: true, visible: true },
-            legalHub: { enabled: true, visible: true },
-            devHub: { enabled: true, visible: true },
-            utilities: { enabled: true, visible: true },
-            financeHub: { enabled: true, visible: true },
-            adminPanel: { enabled: true, visible: true },
-            aiCofounder: { enabled: true, visible: true },
-            marketResearch: { enabled: true, visible: true },
-            pitchDeck: { enabled: true, visible: true },
-            documentStore: { enabled: true, visible: true },
-            teamManagement: { enabled: true, visible: true }
-          };
-          setFeatureFlags(defaultFlags);
-          return;
-        }
-        throw error;
-      }
 
-      if (data?.value) {
-        setFeatureFlags(data.value);
-      }
     } catch (error: any) {
       console.error('Error loading feature flags:', error);
       setError('Failed to load feature flags');
