@@ -433,10 +433,9 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                    className="p-1 text-gray-400 hover:text-gray-500"
                   >
-                    <Edit2 className="h-3 w-3 mr-1" />
-                    Edit
+                    <Edit2 className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => onAddTask(task)}
