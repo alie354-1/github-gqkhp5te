@@ -26,28 +26,6 @@ export default function AdminPanel() {
     { id: 'feature-flags', name: 'Feature Flags', icon: Settings }
   ];
 
-  if (!profile?.role || !['admin', 'superadmin'].includes(profile.role)) {
-    return (
-      <div className="py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-yellow-50 rounded-lg p-4">
-            <div className="flex">
-              <Shield className="h-5 w-5 text-yellow-400" />
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-yellow-800">
-                  Access Restricted
-                </h3>
-                <p className="mt-2 text-sm text-yellow-700">
-                  You don't have permission to access the admin panel.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
