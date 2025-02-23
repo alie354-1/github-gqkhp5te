@@ -14,16 +14,23 @@ const initAuth = async () => {
     // Get initial session
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError) {
-      throw sessionError;
+      console.error('Session error:', sessionError);
+      setUser(null);
+      return;
     }
 
     if (session?.user) {
+      console.log('Setting initial user:', session.user.email);
       setUser(session.user);
       await fetchProfile(session.user.id);
+    } else {
+      console.log('No initial session found');
+      setUser(null);
     }
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event, session?.user?.email);
       if (session?.user) {
         setUser(session.user);
         await fetchProfile(session.user.id);
@@ -37,6 +44,7 @@ const initAuth = async () => {
     };
   } catch (error) {
     console.error('Error initializing auth:', error);
+    setUser(null);
   }
 };
 
