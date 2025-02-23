@@ -34,7 +34,7 @@ interface NavItem {
   href: string;
   icon: React.ElementType;
   badge?: string;
-  isEnabled?: boolean;
+  featureFlag?: string;
   children?: NavItem[];
 }
 
@@ -105,31 +105,35 @@ export default function Layout() {
   };
 
   const navigation: NavItem[] = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, isEnabled: true },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, featureFlag: 'dashboard' },
     { 
       name: 'My Company', 
       href: hasCompany ? '/company/dashboard' : '/company/setup', 
       icon: Building2,
       badge: !hasCompany && !isLoading ? 'Setup' : undefined,
-      isEnabled: true
+      featureFlag: 'company'
     },
-    { name: 'Messages', href: '/messages', icon: MessageSquare, isEnabled: true },
-    { name: 'Community', href: '/community', icon: Users, isEnabled: true },
-    { name: 'Directory', href: '/directory', icon: BookOpen, isEnabled: true },
-    { name: 'Library', href: '#', icon: FileText, isEnabled: false },
-    { name: 'Marketplace', href: '#', icon: Wallet, isEnabled: false },
-    { name: 'Legal Hub', href: '#', icon: Scale, isEnabled: false },
-    { name: 'Dev Hub', href: '#', icon: Code2, isEnabled: false },
-    { name: 'Utilities', href: '#', icon: Wrench, isEnabled: false },
-    { name: 'Idea Hub', href: '/idea-hub', icon: Lightbulb, isEnabled: true },
-    { name: 'Finance Hub', href: '#', icon: PiggyBank, isEnabled: false },
-    { name: 'Settings', href: '/profile', icon: Settings, isEnabled: true, children: [
-      ...(isAdmin ? [{ name: 'Admin Panel', href: '/admin', icon: Shield, isEnabled: true }] : [])
+    { name: 'Messages', href: '/messages', icon: MessageSquare, featureFlag: 'messages' },
+    { name: 'Community', href: '/community', icon: Users, featureFlag: 'community' },
+    { name: 'Directory', href: '/directory', icon: BookOpen, featureFlag: 'directory' },
+    { name: 'Library', href: '#', icon: FileText, featureFlag: 'library' },
+    { name: 'Marketplace', href: '#', icon: Wallet, featureFlag: 'marketplace' },
+    { name: 'Legal Hub', href: '#', icon: Scale, featureFlag: 'legalHub' },
+    { name: 'Dev Hub', href: '#', icon: Code2, featureFlag: 'devHub' },
+    { name: 'Utilities', href: '#', icon: Wrench, featureFlag: 'utilities' },
+    { name: 'Idea Hub', href: '/idea-hub', icon: Lightbulb, featureFlag: 'ideaHub' },
+    { name: 'Finance Hub', href: '#', icon: PiggyBank, featureFlag: 'financeHub' },
+    { name: 'Settings', href: '/profile', icon: Settings, featureFlag: 'settings', children: [
+      ...(isAdmin ? [{ name: 'Admin Panel', href: '/admin', icon: Shield, featureFlag: 'adminPanel' }] : [])
     ]},
   ];
 
   const renderNavItem = (item: NavItem) => {
-    if (!item.isEnabled) {
+    const flag = item.featureFlag ? featureFlags[item.featureFlag] : { enabled: true, visible: true };
+    if (!flag?.visible) {
+      return null;
+    }
+    if (!flag?.enabled) {
       return (
         <Tooltip.Provider>
           <Tooltip.Root>
