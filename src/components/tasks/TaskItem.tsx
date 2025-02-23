@@ -450,19 +450,27 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   {suggestedTask && onAddTask && (
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => setIsEditing(true)}
+                        onClick={() => {
+                          if (suggestedTask) {
+                            setIsEditing(true);
+                          } else {
+                            handleSave();
+                          }
+                        }}
                         className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                       >
                         <Edit2 className="h-3 w-3 mr-1" />
                         Edit
                       </button>
-                      <button
-                        onClick={() => onAddTask(task)}
-                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-                      >
-                        <Plus className="h-3 w-3 mr-1" />
-                        Add
-                      </button>
+                      {suggestedTask && (
+                        <button
+                          onClick={() => onAddTask(task)}
+                          className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                        >
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
