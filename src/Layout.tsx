@@ -46,7 +46,7 @@ export default function Layout() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'superadmin';
+  const isAdmin = true; // Temporarily allow all users to see admin panel
 
   useEffect(() => {
     const checkCompanyAccess = async () => {
