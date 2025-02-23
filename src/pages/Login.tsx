@@ -12,10 +12,18 @@ export default function Login() {
   const [error, setError] = useState('');
 
   React.useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        navigate('/dashboard', { replace: true });
+      }
+    });
+
     if (user) {
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     }
-  }, [user, navigate]);
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
