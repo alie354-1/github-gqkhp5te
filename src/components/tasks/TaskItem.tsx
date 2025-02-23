@@ -473,7 +473,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   onClick={() => setIsEditing(true)}
                   className="p-1 text-gray-400 hover:text-gray-500"
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit2 className="h-4 w-4" />
                 </button>
               )}
               {!suggestedTask && onRemoveTask && (
