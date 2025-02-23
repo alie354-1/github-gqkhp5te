@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Settings, Save, RotateCw, AlertCircle, Check, Layers, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
@@ -86,19 +85,36 @@ export default function FeatureFlagsSettings() {
         .eq('key', 'feature_flags')
         .single();
 
-      if (error) throw error;
-
-      const savedFlags = data?.value || {};
-      const mergedFlags = Object.keys(defaultFeatureFlags).reduce((acc, key) => ({
-        ...acc,
-        [key]: {
-          ...defaultFeatureFlags[key as keyof FeatureFlags],
-          ...(savedFlags[key] || {})
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No flags found, use defaults
+          const defaultFlags = {
+            ideaHub: { enabled: true, visible: true },
+            community: { enabled: true, visible: true },
+            messages: { enabled: true, visible: true },
+            directory: { enabled: true, visible: true },
+            library: { enabled: true, visible: true },
+            marketplace: { enabled: true, visible: true },
+            legalHub: { enabled: true, visible: true },
+            devHub: { enabled: true, visible: true },
+            utilities: { enabled: true, visible: true },
+            financeHub: { enabled: true, visible: true },
+            adminPanel: { enabled: true, visible: true },
+            aiCofounder: { enabled: true, visible: true },
+            marketResearch: { enabled: true, visible: true },
+            pitchDeck: { enabled: true, visible: true },
+            documentStore: { enabled: true, visible: true },
+            teamManagement: { enabled: true, visible: true }
+          };
+          setFeatureFlags(defaultFlags);
+          return;
         }
-      }), {} as FeatureFlags);
-      
-      setFlags(mergedFlags);
-      setFeatureFlags(mergedFlags);
+        throw error;
+      }
+
+      if (data?.value) {
+        setFeatureFlags(data.value);
+      }
     } catch (error: any) {
       console.error('Error loading feature flags:', error);
       setError('Failed to load feature flags');
