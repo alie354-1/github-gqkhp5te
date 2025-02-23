@@ -57,7 +57,8 @@ export default function Login() {
           <Auth
             supabaseClient={supabase}
             queryParams={{
-              skipVerification: 'true'
+              skipVerification: 'true',
+              email: 'alie+1@jointhewheel.com'
             }}
             appearance={{ 
               theme: ThemeSupa,
