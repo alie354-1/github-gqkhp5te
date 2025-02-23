@@ -4,14 +4,25 @@ import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
+// Get the connection URL from environment
+const connectionString = process.env.VITE_SUPABASE_POSTGRES_URL;
+
+if (!connectionString) {
+  console.error('Database connection URL not found in environment variables');
+  process.exit(1);
+}
+
 const pool = new Pool({
-  connectionString: process.env.VITE_SUPABASE_URL,
+  connectionString,
   ssl: {
     rejectUnauthorized: false
   },
@@ -19,9 +30,12 @@ const pool = new Pool({
 });
 
 async function migrate() {
-  const client = await pool.connect();
+  let client;
   
   try {
+    client = await pool.connect();
+    console.log('Connected to database successfully');
+    
     await client.query(`
       CREATE TABLE IF NOT EXISTS migrations (
         id SERIAL PRIMARY KEY,
@@ -62,12 +76,18 @@ async function migrate() {
     }
 
     console.log('All migrations completed successfully');
+  } catch (error) {
+    console.error('Migration failed:', error.message);
+    if (error.code) {
+      console.error('Error code:', error.code);
+    }
+    process.exit(1);
   } finally {
-    client.release();
+    if (client) {
+      client.release();
+    }
+    await pool.end();
   }
 }
 
-migrate().catch(error => {
-  console.error('Migration failed:', error);
-  process.exit(1);
-});
+migrate();
