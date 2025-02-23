@@ -21,7 +21,8 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     debug: true
   },
   db: {
-    schema: 'public'
+    schema: 'public',
+    autoRefreshToken: true
   },
   global: {
     headers: { 'x-application-name': 'startup-os' }
