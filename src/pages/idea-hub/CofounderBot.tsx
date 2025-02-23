@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Bot, 
   Send, 
-  Brain, 
-  MessageSquare,
   Clock,
   CheckSquare,
   Target,
@@ -13,20 +11,11 @@ import {
   ArrowRight,
   ListChecks,
   FileText,
-  Bug
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
 import TaskGenerationPrompt from '../../components/tasks/TaskGenerationPrompt';
-import TaskPromptDialog from '../../components/TaskPromptDialog';
 import { generateTasks } from '../../lib/openai';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-  type: 'question' | 'answer' | 'feedback' | 'summary';
-  section?: string;
-}
 
 interface StandupEntry {
   accomplished: string;
@@ -55,7 +44,7 @@ const SECTION_TRANSITIONS = {
   }
 };
 
-export default function CofounderBot() {
+const CofounderBot = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const [currentSection, setCurrentSection] = useState<keyof typeof SECTION_TRANSITIONS>('accomplished');
@@ -77,7 +66,7 @@ export default function CofounderBot() {
   const [error, setError] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const [isSummarizing, setIsSummarizing] = useState(false);
-  const isSuperAdmin = user?.email === 'alie+1@jointhewheel.com';
+
 
   useEffect(() => {
     if (!user) {
@@ -113,7 +102,7 @@ export default function CofounderBot() {
 
       // Format feedback into a readable string
       const formattedFeedback = `🎯 Key Insights
-
+      
 ${feedback.strengths.length > 0 ? `Strengths:
 ${feedback.strengths.map(s => `• ${s}`).join('\n')}
 
@@ -263,16 +252,28 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
   };
 
   const generateDebugTasks = async () => {
-    const mockStandupEntry = {
-      accomplished: "Built user authentication system and fixed API endpoints",
-      working_on: "Implementing task management features and improving UI responsiveness",
-      blockers: "Need to resolve database performance issues",
-      goals: "Complete the MVP features by end of week"
-    };
+    try {
+      const mockStandupEntry = {
+        accomplished: "Built user authentication system and fixed API endpoints",
+        working_on: "Implementing task management features and improving UI responsiveness",
+        blockers: "Need to resolve database performance issues",
+        goals: "Complete the MVP features by end of week"
+      };
 
-    const response = await generateTasks(mockStandupEntry, user?.id || '');
-    console.log('Generated debug tasks:', response);
+      const response = await generateTasks(mockStandupEntry, user?.id || '');
+      console.log('Generated debug tasks:', response);
+    } catch (error) {
+      console.error('Error generating debug tasks:', error);
+    }
   };
+
+  interface Message {
+    role: 'user' | 'assistant';
+    content: string;
+    type: 'question' | 'answer' | 'feedback' | 'summary';
+    section?: string;
+  }
+
 
   return (
     <div className="py-6">
@@ -289,12 +290,22 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              Skip Standup
-            </button>
+            <div className="flex gap-4">
+              {user?.email === 'acohen@jointhewheel.com' && (
+                <button
+                  onClick={generateDebugTasks}
+                  className="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50"
+                >
+                  Debug Tasks
+                </button>
+              )}
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Skip Standup
+              </button>
+            </div>
           </div>
         </div>
 
@@ -451,10 +462,12 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
           isOpen={showTaskPrompt}
           onClose={() => setShowTaskPrompt(false)}
           standupEntry={currentEntry}
-          isSuperAdmin={isSuperAdmin}
+          isSuperAdmin={user?.email === 'acohen@jointhewheel.com'}
           generateDebugTasks={generateDebugTasks}
         />
       </div>
     </div>
   );
-}
+};
+
+export default CofounderBot;
