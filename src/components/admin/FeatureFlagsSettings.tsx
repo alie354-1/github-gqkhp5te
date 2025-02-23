@@ -115,13 +115,26 @@ export default function FeatureFlagsSettings() {
         return;
       }
 
-      if (!data?.value) {
-        throw new Error('No feature flags data found');
-      }
+      try {
+        if (!data?.value) {
+          console.log('No feature flags data found, using defaults');
+          setFlags(defaultFeatureFlags);
+          setFeatureFlags(defaultFeatureFlags);
+          return;
+        }
 
-      console.log('Setting feature flags:', data.value);
-      setFlags(data.value);
-      setFeatureFlags(data.value);
+        const parsedFlags = typeof data.value === 'string' ? 
+          JSON.parse(data.value) : data.value;
+        
+        console.log('Setting feature flags:', parsedFlags);
+        setFlags(parsedFlags);
+        setFeatureFlags(parsedFlags);
+      } catch (err) {
+        console.error('Error parsing feature flags:', err);
+        setError('Error loading feature flags');
+        setFlags(defaultFeatureFlags);
+        setFeatureFlags(defaultFeatureFlags);
+      }
 
       if (error) {
         if (error.code === 'PGRST116') {
