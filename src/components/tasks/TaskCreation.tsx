@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Plus, RotateCw, Brain } from 'lucide-react';
+import { Plus, RotateCw, Brain, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
 import { generateTasks } from '../../lib/openai';
@@ -38,11 +38,25 @@ interface Task {
     category: string;
     description: string;
   }[];
+  user_id: string;
 }
 
 interface TaskCreationProps {
   isCompanyView?: boolean;
 }
+
+interface SimpleTask {
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'pending' | 'in_progress' | 'completed';
+  category: string;
+  task_type: string;
+  estimated_hours: number;
+  due_date: string;
+  user_id: string;
+}
+
 
 export default function TaskCreation({ isCompanyView = false }: TaskCreationProps) {
   const navigate = useNavigate();
@@ -53,6 +67,18 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [simpleTask, setSimpleTask] = useState<Partial<SimpleTask>>({
+    title: '',
+    description: '',
+    priority: 'medium',
+    status: 'pending',
+    category: 'personal',
+    task_type: 'task',
+    estimated_hours: 1,
+    due_date: new Date().toISOString().split('T')[0]
+  });
+
 
   useEffect(() => {
     if (location.state?.standupEntry) {
@@ -66,12 +92,12 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
   const getNextBusinessDay = () => {
     const date = new Date();
     date.setDate(date.getDate() + 1);
-    
+
     // Keep adding days until we get a business day (Mon-Fri)
     while (date.getDay() === 0 || date.getDay() === 6) {
       date.setDate(date.getDate() + 1);
     }
-    
+
     return date.toISOString().split('T')[0];
   };
 
@@ -82,7 +108,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
 
     try {
       const { tasks } = await generateTasks(location.state.standupEntry, user.id);
-      
+
       // Set next business day as due date and flatten the structure
       const categorizedTasks = tasks.map(task => ({
         ...task,
@@ -93,7 +119,8 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
         success_metrics: task.success_metrics || [],
         resources: task.resources || [],
         learning_resources: task.learning_resources || [],
-        tools: task.tools || []
+        tools: task.tools || [],
+        user_id: user.id
       }));
 
       setSuggestedTasks(categorizedTasks);
@@ -120,7 +147,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
     const updatedTasks = taskList.map(task =>
       task.id === taskId ? { ...task, ...updates } : task
     );
-    
+
     if (selectedTasks.find(t => t.id === taskId)) {
       setSelectedTasks(updatedTasks);
     } else {
@@ -170,6 +197,48 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
     }
   };
 
+  const handleSimpleTaskSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const { data, error } = await supabase
+        .from('tasks')
+        .insert([{
+          ...simpleTask,
+          user_id: user?.id
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setIsCreating(false);
+      // Reset form
+      setSimpleTask({
+        title: '',
+        description: '',
+        priority: 'medium',
+        status: 'pending',
+        category: 'personal',
+        task_type: 'task',
+        estimated_hours: 1,
+        due_date: new Date().toISOString().split('T')[0]
+      });
+
+      // Reload tasks (you can implement this through a callback if needed)
+      window.location.reload();
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+
+  const handleSimpleTaskChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setSimpleTask({
+      ...simpleTask,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <div className="flex items-center justify-between mb-8">
@@ -204,7 +273,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
         {selectedTasks.length > 0 && (
           <div>
             <h2 className="text-lg font-medium text-gray-900 mb-4">Selected Tasks</h2>
-            <TaskList 
+            <TaskList
               tasks={selectedTasks}
               onRemoveTask={handleRemoveTask}
               onUpdateTask={handleUpdateTask}
@@ -241,7 +310,7 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
               <p className="mt-2 text-sm text-gray-500">Generating task suggestions...</p>
             </div>
           ) : suggestedTasks.length > 0 ? (
-            <TaskList 
+            <TaskList
               tasks={suggestedTasks}
               onAddTask={handleAddTask}
               onUpdateTask={handleUpdateTask}
@@ -257,6 +326,116 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
             </div>
           )}
         </div>
+        {/* Simple Task Creation */}
+        {isCreating ? (
+          <div className="bg-white shadow rounded-lg p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Create New Task</h3>
+              <button
+                onClick={() => setIsCreating(false)}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSimpleTaskSubmit}>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    required
+                    value={simpleTask.title || ''}
+                    onChange={handleSimpleTaskChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    name="description"
+                    id="description"
+                    value={simpleTask.description || ''}
+                    onChange={handleSimpleTaskChange}
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="priority" className="block text-sm font-medium text-gray-700">Priority</label>
+                    <select
+                      name="priority"
+                      id="priority"
+                      value={simpleTask.priority || 'medium'}
+                      onChange={handleSimpleTaskChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="estimated_hours" className="block text-sm font-medium text-gray-700">Estimated Hours</label>
+                    <input
+                      type="number"
+                      name="estimated_hours"
+                      id="estimated_hours"
+                      min="0"
+                      step="0.5"
+                      value={simpleTask.estimated_hours || 1}
+                      onChange={handleSimpleTaskChange}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="due_date" className="block text-sm font-medium text-gray-700">Due Date</label>
+                  <input
+                    type="date"
+                    name="due_date"
+                    id="due_date"
+                    value={simpleTask.due_date || new Date().toISOString().split('T')[0]}
+                    onChange={handleSimpleTaskChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsCreating(false)}
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Create Task
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <button
+            onClick={() => setIsCreating(true)}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Task
+          </button>
+        )}
       </div>
     </div>
   );
