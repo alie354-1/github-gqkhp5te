@@ -1,0 +1,39 @@
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.433Z #_autoRefreshTokenTick() begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_acquireLock begin 0
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_acquireLock lock acquired for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_useSession begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #__loadSession() begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #getSession() session from storage {access_token: 'eyJhbGciOiJIUzI1NiIsImtpZCI6IldGNTJsQ2x6SWpvODJIVW…HNlfQ.HEmwi_s0wED5LeuWtEDBKjyO46WM9g1BdC_hahc7HWg', token_type: 'bearer', expires_in: 3600, expires_at: 1740334758, refresh_token: 'O-4h9BjHX8sv6TbnWAgKKw', …}
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #__loadSession() session has not expired expires_at 1740334758
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #__loadSession() end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_autoRefreshTokenTick() access token expires in 75 ticks, a tick lasts 30000ms, refresh threshold is 3 ticks
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_useSession end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.434Z #_autoRefreshTokenTick() end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.435Z #_acquireLock lock released for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.435Z #_acquireLock end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.766Z #_autoRefreshTokenTick() begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.766Z #_acquireLock begin 0
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_acquireLock lock acquired for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_useSession begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #__loadSession() begin
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #getSession() session from storage {access_token: 'eyJhbGciOiJIUzI1NiIsImtpZCI6IldGNTJsQ2x6SWpvODJIVW…HNlfQ.HEmwi_s0wED5LeuWtEDBKjyO46WM9g1BdC_hahc7HWg', token_type: 'bearer', expires_in: 3600, expires_at: 1740334758, refresh_token: 'O-4h9BjHX8sv6TbnWAgKKw', …}
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #__loadSession() session has not expired expires_at 1740334758
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #__loadSession() end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_autoRefreshTokenTick() access token expires in 75 ticks, a tick lasts 30000ms, refresh threshold is 3 ticks
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_useSession end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_autoRefreshTokenTick() end
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_acquireLock lock released for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+ GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.767Z #_acquireLock end
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.771Z #_autoRefreshTokenTick() begin
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.771Z #_acquireLock begin 0
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_acquireLock lock acquired for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_useSession begin
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #__loadSession() begin
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #getSession() session from storage {access_token: 'eyJhbGciOiJIUzI1NiIsImtpZCI6IldGNTJsQ2x6SWpvODJIVW…HNlfQ.HEmwi_s0wED5LeuWtEDBKjyO46WM9g1BdC_hahc7HWg', token_type: 'bearer', expires_in: 3600, expires_at: 1740334758, refresh_token: 'O-4h9BjHX8sv6TbnWAgKKw', …}
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #__loadSession() session has not expired expires_at 1740334758
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #__loadSession() end
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_autoRefreshTokenTick() access token expires in 75 ticks, a tick lasts 30000ms, refresh threshold is 3 ticks
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_useSession end
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_autoRefreshTokenTick() end
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_acquireLock lock released for storage key sb-jjlzqmoozgiuhydnqilj-auth-token
+Console.js:61 GoTrueClient@0 (2.67.3) 2025-02-23T17:41:42.772Z #_acquireLock end
