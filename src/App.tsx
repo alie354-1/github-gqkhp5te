@@ -10,7 +10,7 @@ import CompanySettings from './pages/company/CompanySettings';
 import IdeaHub from './pages/IdeaHub';
 import Community from './pages/Community';
 import Messages from './pages/Messages';
-import Layout from './components/Layout';
+import Layout from './Layout';
 import GoogleCallback from './pages/auth/GoogleCallback';
 import CofounderBot from './pages/idea-hub/CofounderBot';
 import IdeaRefinement from './pages/idea-hub/IdeaRefinement';
@@ -25,19 +25,10 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" />} />
-          <Route path="dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
-
-        {/* Protected Routes */}
-        <Route path="/" element={
-          <PrivateRoute>
-            <Layout />
-          </PrivateRoute>
-        }>
-          <Route index element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="directory" element={<Directory />} />
           <Route path="messages" element={<Messages />} />
@@ -61,11 +52,6 @@ function App() {
       </Routes>
     </div>
   );
-}
-
-function PrivateRoute({ children }: { children: React.ReactNode }) {
-  // Temporarily bypassing auth check
-  return <>{children}</>;
 }
 
 export default App;
