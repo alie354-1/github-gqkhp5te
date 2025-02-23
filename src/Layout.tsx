@@ -45,6 +45,7 @@ export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isAdmin = true;
   const profile = {
     id: '38d3420e-3811-4ba2-82b1-934f79d5c44b',
