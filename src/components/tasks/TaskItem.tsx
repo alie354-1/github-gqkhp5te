@@ -5,7 +5,7 @@ import {
   Clock, 
   AlertCircle, 
   CheckCircle, 
-  Edit, 
+  Edit2, 
   Save, 
   X, 
   Book, 
@@ -430,12 +430,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 {task.priority}
               </span>
               {suggestedTask && onAddTask && !isEditing && (
-                <>
+                <div className="flex space-x-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 mr-2"
+                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                   >
-                    <Edit className="h-3 w-3 mr-1" />
+                    <Edit2 className="h-3 w-3 mr-1" />
                     Edit
                   </button>
                   <button

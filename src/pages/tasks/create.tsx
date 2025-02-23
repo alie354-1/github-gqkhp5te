@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Clock, ChevronDown, PenSquare, Trash2, Info, RotateCw, Book, LightbulbIcon } from 'lucide-react';
@@ -35,6 +34,7 @@ export default function TaskCreate() {
       estimated_time: "2h"
     }
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddTask = (task: Task) => {
     setSelectedTasks([...selectedTasks, task]);
@@ -45,8 +45,10 @@ export default function TaskCreate() {
   };
 
   const handleRegenerateTasks = async () => {
+    setIsLoading(true);
     // Implement task regeneration logic
     console.log("Regenerating tasks...");
+    setTimeout(() => setIsLoading(false), 2000); // Simulate loading time
   };
 
   const handleSaveTasks = async () => {
@@ -56,6 +58,14 @@ export default function TaskCreate() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {isLoading && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex items-center space-x-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <p className="text-gray-700">Generating tasks...</p>
+          </div>
+        </div>
+      )}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Create Tasks</h1>
         <button
@@ -93,7 +103,9 @@ export default function TaskCreate() {
                     <button onClick={() => handleRemoveTask(index)}>
                       <Trash2 className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                     </button>
-                    <PenSquare className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                    <button className="visible"> {/* Added class for visibility */}
+                      <PenSquare className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                    </button>
                     <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                   </div>
                 </div>
