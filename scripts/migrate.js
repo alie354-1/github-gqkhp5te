@@ -1,3 +1,4 @@
+
 import pg from 'pg';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
@@ -9,9 +10,8 @@ const __dirname = dirname(__filename);
 
 const { Pool } = pg;
 
-// Get database connection details from environment variables
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.VITE_SUPABASE_DB_URL,
   ssl: {
     rejectUnauthorized: false
   }
@@ -21,7 +21,6 @@ async function migrate() {
   const client = await pool.connect();
   
   try {
-    // Create migrations table if it doesn't exist
     await client.query(`
       CREATE TABLE IF NOT EXISTS migrations (
         id SERIAL PRIMARY KEY,
@@ -30,19 +29,16 @@ async function migrate() {
       );
     `);
 
-    // Get list of executed migrations
     const { rows: executedMigrations } = await client.query(
       'SELECT name FROM migrations ORDER BY id'
     );
     const executedMigrationNames = executedMigrations.map(row => row.name);
 
-    // Get all migration files
     const migrationsDir = join(__dirname, '..', 'supabase', 'migrations');
     const migrationFiles = readdirSync(migrationsDir)
       .filter(file => file.endsWith('.sql'))
       .sort();
 
-    // Run pending migrations
     for (const file of migrationFiles) {
       if (!executedMigrationNames.includes(file)) {
         console.log(`Running migration: ${file}`);
