@@ -25,5 +25,16 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce'
+  },
+  db: {
+    schema: 'public'
+  },
+  global: {
+    headers: { 'x-application-name': 'startup-os' }
   }
 });
+
+// Test the connection
+supabase.from('profiles').select('count', { count: 'exact', head: true })
+  .then(() => console.log('Database connection successful'))
+  .catch(err => console.error('Database connection error:', err.message));
