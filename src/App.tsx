@@ -23,8 +23,7 @@ import IdeaCanvas from './pages/idea-hub/IdeaCanvas';
 import MarketResearch from './pages/idea-hub/MarketResearch';
 
 function App() {
-  const { user } = useAuthStore();
-
+  // Bypass auth check
   return (
     <div className="min-h-screen bg-gray-100">
       <Routes>
