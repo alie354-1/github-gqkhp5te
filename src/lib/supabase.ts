@@ -16,7 +16,8 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     flowType: 'pkce',
     debug: true,
     emailAuth: {
-      requireVerification: false
+      requireVerification: false,
+      skipVerification: true
     }
   },
   db: {
