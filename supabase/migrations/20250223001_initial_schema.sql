@@ -48,13 +48,34 @@ CREATE TABLE companies (
   updated_at timestamptz DEFAULT now()
 );
 
+-- Create setup progress table
+CREATE TABLE setup_progress (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE,
+  step text NOT NULL,
+  completed boolean DEFAULT false,
+  data jsonb DEFAULT '{}',
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  UNIQUE(user_id, step)
+);
+
 -- Enable RLS
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE companies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE setup_progress ENABLE ROW LEVEL SECURITY;
 
 -- Create indexes
 CREATE INDEX idx_profiles_email ON profiles(email);
 CREATE INDEX idx_companies_owner ON companies(owner_id);
+CREATE INDEX idx_setup_progress_user ON setup_progress(user_id);
+
+-- Create RLS policies
+CREATE POLICY "Users can manage their own setup progress"
+  ON setup_progress
+  FOR ALL
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
 
 -- Create initial superadmin user
 DO $$ 
