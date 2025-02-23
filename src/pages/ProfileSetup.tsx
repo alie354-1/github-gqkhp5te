@@ -123,7 +123,16 @@ export default function ProfileSetup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !formData.full_name) return;
+    
+    if (!user) {
+      alert('Please log in to continue');
+      return;
+    }
+    
+    if (!formData.full_name) {
+      alert('Please enter your full name to continue');
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -131,7 +140,7 @@ export default function ProfileSetup() {
         .from('profiles')
         .update({
           ...formData,
-          setup_progress: null, // Clear setup progress when complete
+          setup_progress: null,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
@@ -141,6 +150,7 @@ export default function ProfileSetup() {
       await fetchProfile(user.id);
       navigate('/dashboard');
     } catch (error: any) {
+      alert('Error updating profile: ' + error.message);
       console.error('Error updating profile:', error);
     } finally {
       setIsLoading(false);
