@@ -128,9 +128,7 @@ export default function FeatureFlagsSettings() {
     } finally {
       setIsLoading(false);
     }
-          .from('app_settings')
-          .insert({
-            key: 'feature_flags',
+  };
             value: defaultFeatureFlags,
             updated_at: new Date().toISOString()
           });
