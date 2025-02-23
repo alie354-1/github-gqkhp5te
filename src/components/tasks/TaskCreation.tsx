@@ -203,25 +203,38 @@ export default function TaskCreation({ isCompanyView = false }: TaskCreationProp
     setError('');
 
     try {
+      if (!user?.id) {
+        throw new Error('User not authenticated');
+      }
+
+      const taskData = {
+        title: simpleTask.title,
+        description: simpleTask.description || '',
+        priority: simpleTask.priority || 'medium',
+        status: simpleTask.status || 'pending',
+        category: simpleTask.category || 'personal',
+        task_type: simpleTask.task_type || 'task',
+        estimated_hours: simpleTask.estimated_hours || 1,
+        due_date: simpleTask.due_date || new Date().toISOString().split('T')[0],
+        user_id: user.id,
+        assigned_to: user.id,
+        created_at: new Date().toISOString()
+      };
+
+      console.log('Creating task:', taskData);
+
       const { data: createdTask, error: taskError } = await supabase
         .from('tasks')
-        .insert({
-          title: simpleTask.title,
-          description: simpleTask.description,
-          priority: simpleTask.priority,
-          status: simpleTask.status,
-          category: simpleTask.category,
-          task_type: simpleTask.task_type,
-          estimated_hours: simpleTask.estimated_hours,
-          due_date: simpleTask.due_date,
-          user_id: user?.id,
-          assigned_to: user?.id
-        })
-        .select()
+        .insert(taskData)
+        .select('*')
         .single();
 
-      if (taskError) throw taskError;
+      if (taskError) {
+        console.error('Task creation error:', taskError);
+        throw taskError;
+      }
 
+      console.log('Task created:', createdTask);
       setIsCreating(false);
       // Reset form
       setSimpleTask({
