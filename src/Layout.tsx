@@ -46,11 +46,11 @@ export default function Layout() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const isAdmin = true;
+  const isAdmin = user?.email === 'aliecohen@gmail.com';
   const profile = {
-    id: '38d3420e-3811-4ba2-82b1-934f79d5c44b',
+    id: user?.id || '',
     full_name: 'Alie Cohen',
-    role: 'admin',
+    role: isAdmin ? 'admin' : 'user',
     avatar_url: null
   };
 
