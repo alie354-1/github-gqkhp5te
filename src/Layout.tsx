@@ -136,14 +136,31 @@ export default function Layout() {
   ];
 
   const renderNavItem = (item: NavItem) => {
-    const flag = item.featureFlag ? currentFeatureFlags[item.featureFlag] : { enabled: true, visible: true };
-    if (!flag?.visible) {
-      return null;
-    }
-    if (!flag?.enabled) {
-      return (
-        <Tooltip.Provider>
-          <Tooltip.Root>
+    // All items are enabled by default
+    return (
+      <Link
+        to={item.href}
+        className={`${
+          location.pathname === item.href
+            ? 'bg-indigo-50 text-indigo-600'
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+        } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
+      >
+        <item.icon
+          className={`${
+            location.pathname === item.href
+              ? 'text-indigo-600'
+              : 'text-gray-400 group-hover:text-gray-500'
+          } mr-3 h-5 w-5`}
+        />
+        {item.name}
+        {item.badge && (
+          <span className="ml-auto inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+            {item.badge}
+          </span>
+        )}
+      </Link>
+    );
             <Tooltip.Trigger asChild>
               <div className="flex items-center px-2 py-2 text-sm font-medium text-gray-400 cursor-not-allowed rounded-md group">
                 <item.icon className="h-5 w-5 mr-3" />
