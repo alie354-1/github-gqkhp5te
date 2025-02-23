@@ -440,49 +440,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 {task.priority}
               </span>
               {!isEditing && (
-                <div className="flex space-x-2">
-                  {suggestedTask && onAddTask && (
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setIsEditing(true)}
-                        className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                      >
-                        <Edit2 className="h-3 w-3 mr-1" />
-                        Edit
-                      </button>
-                      {suggestedTask && (
-                        <button
-                          onClick={() => onAddTask(task)}
-                          className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-                        >
-                          <Plus className="h-3 w-3 mr-1" />
-                          Add
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={() => {
-                      suggestedTask ? onAddTask(editedTask) : handleSave();
-                      setIsEditing(false);
-                    }}
-                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 mr-2"
-                  >
-                    {suggestedTask ? <Plus className="h-3 w-3 mr-1" /> : <Save className="h-3 w-3 mr-1" />}
-                    {suggestedTask ? 'Save & Add' : 'Save'}
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                  >
-                    <X className="h-3 w-3 mr-1" />
-                    Cancel
-                  </button>
-                </>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-1 text-gray-400 hover:text-gray-500"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
               )}
               {!suggestedTask && onRemoveTask && (
                 <button
