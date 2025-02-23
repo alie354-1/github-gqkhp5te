@@ -11,12 +11,10 @@ const { Pool } = pg;
 
 // Get database connection details from environment variables
 const pool = new Pool({
-  host: process.env.VITE_SUPABASE_URL?.replace('https://', '').split('.')[0] + '.supabase.co',
-  port: 5432,
-  database: 'postgres',
-  user: 'postgres',
-  password: process.env.VITE_SUPABASE_ANON_KEY,
-  ssl: true
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 async function migrate() {
