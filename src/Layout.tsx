@@ -41,17 +41,20 @@ interface NavItem {
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut } = useAuthStore();
+  const { user } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const isAdmin = true;
   const profile = {
-    id: user?.id,
-    full_name: user?.email?.split('@')[0] || 'User',
+    id: '38d3420e-3811-4ba2-82b1-934f79d5c44b',
+    full_name: 'Alie Cohen',
     role: 'admin',
     avatar_url: null
+  };
+
+  const handleSignOut = () => {
+    navigate('/login');
   };
 
   useEffect(() => {

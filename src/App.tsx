@@ -22,10 +22,12 @@ import IdeaCanvas from './pages/idea-hub/IdeaCanvas';
 import MarketResearch from './pages/idea-hub/MarketResearch';
 
 function App() {
-  // Bypass auth check
   return (
     <div className="min-h-screen bg-gray-100">
       <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/dashboard" />} />
+          <Route path="dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Navigate to="/dashboard" replace />} />
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
