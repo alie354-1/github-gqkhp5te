@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
-import TaskGenerationPrompt from '../../components/tasks/TaskGenerationPrompt';
 import { generateTasks } from '../../lib/openai';
 
 interface StandupEntry {
@@ -62,7 +61,6 @@ const CofounderBot = () => {
   }]);
   const [currentInput, setCurrentInput] = useState('');
   const [isThinking, setIsThinking] = useState(false);
-  const [showTaskPrompt, setShowTaskPrompt] = useState(false);
   const [error, setError] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const [isSummarizing, setIsSummarizing] = useState(false);
@@ -102,7 +100,7 @@ const CofounderBot = () => {
 
       // Format feedback into a readable string
       const formattedFeedback = `🎯 Key Insights
-      
+
 ${feedback.strengths.length > 0 ? `Strengths:
 ${feedback.strengths.map(s => `• ${s}`).join('\n')}
 
@@ -160,8 +158,8 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
 
       if (saveError) throw saveError;
 
-      // Show task generation prompt
-      setShowTaskPrompt(true);
+      // Show task generation prompt - removed in this version
+      //setShowTaskPrompt(true);
     } catch (error: any) {
       console.error('Error saving standup:', error);
       setError(error.message);
@@ -456,15 +454,6 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
             )}
           </div>
         </div>
-
-        {/* Task Generation Dialog */}
-        <TaskGenerationPrompt
-          isOpen={showTaskPrompt}
-          onClose={() => setShowTaskPrompt(false)}
-          standupEntry={currentEntry}
-          isSuperAdmin={user?.email === 'acohen@jointhewheel.com'}
-          generateDebugTasks={generateDebugTasks}
-        />
       </div>
     </div>
   );
