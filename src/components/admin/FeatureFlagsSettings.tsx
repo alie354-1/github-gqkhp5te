@@ -120,9 +120,14 @@ export default function FeatureFlagsSettings() {
       console.log('Setting flags:', flagData);
       setFlags(flagData);
       setFeatureFlags(flagData);
-        // Record not found, create default flags
-        console.log('Creating default flags...');
-        const { error: insertError } = await supabase
+    } catch (error) {
+      console.error('Error loading feature flags:', error);
+      setError('Failed to load feature flags');
+      setFlags(defaultFeatureFlags);
+      setFeatureFlags(defaultFeatureFlags);
+    } finally {
+      setIsLoading(false);
+    }
           .from('app_settings')
           .insert({
             key: 'feature_flags',
