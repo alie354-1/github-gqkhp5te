@@ -53,10 +53,6 @@ export default function Layout() {
     avatar_url: null
   };
 
-  const handleSignOut = () => {
-    navigate('/login');
-  };
-
   useEffect(() => {
     const checkCompanyAccess = async () => {
       if (!user) return;
