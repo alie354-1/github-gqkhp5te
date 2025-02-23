@@ -279,14 +279,22 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <Bot className="h-8 w-8 text-indigo-600" />
-            <div className="ml-3">
-              <h1 className="text-2xl font-semibold text-gray-900">Daily Standup</h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Let's review your progress and plan next steps
-              </p>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <Bot className="h-8 w-8 text-indigo-600" />
+              <div className="ml-3">
+                <h1 className="text-2xl font-semibold text-gray-900">Daily Standup</h1>
+                <p className="mt-1 text-sm text-gray-500">
+                  Let's review your progress and plan next steps
+                </p>
+              </div>
             </div>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+            >
+              Skip Standup
+            </button>
           </div>
         </div>
 
