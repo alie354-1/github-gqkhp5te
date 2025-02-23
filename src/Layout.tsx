@@ -41,18 +41,12 @@ interface NavItem {
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [hasCompany, setHasCompany] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const isAdmin = user?.email === 'aliecohen@gmail.com';
-  const profile = {
-    id: user?.id || '',
-    full_name: 'Alie Cohen',
-    role: isAdmin ? 'admin' : 'user',
-    avatar_url: null
-  };
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'superadmin';
 
   useEffect(() => {
     const checkCompanyAccess = async () => {
