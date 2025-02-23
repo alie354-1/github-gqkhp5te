@@ -1,6 +1,7 @@
 // Update the CofounderBot component to properly display feedback
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { generateTasks } from '../../lib/openai';
 import { 
   Bot, 
   Send, 
