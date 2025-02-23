@@ -18,7 +18,10 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    debug: true
+    debug: true,
+    emailAuth: {
+      requireVerification: false
+    }
   },
   db: {
     schema: 'public',
