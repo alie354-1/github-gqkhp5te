@@ -24,13 +24,35 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    debug: true
   },
   db: {
     schema: 'public'
   },
   global: {
     headers: { 'x-application-name': 'startup-os' }
+  }
+});
+
+// Log any auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log('Auth event:', event);
+  if (session) {
+    console.log('User:', session.user?.email);
+  }
+  if (event === 'SIGNED_IN') {
+    console.log('Checking database access...');
+    supabase
+      .from('profiles')
+      .select('*', { count: 'exact' })
+      .limit(0)
+      .then(response => {
+        console.log('Database response:', response);
+        if (response.error) {
+          console.error('Database error:', response.error);
+        }
+      });
   }
 });
 
