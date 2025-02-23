@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
+import TaskGenerationPrompt from '../../components/tasks/TaskGenerationPrompt';
 import TaskPromptDialog from '../../components/TaskPromptDialog';
 import { generateTasks } from '../../lib/openai';
 
@@ -438,7 +439,7 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
         </div>
 
         {/* Task Generation Dialog */}
-        <TaskPromptDialog
+        <TaskGenerationPrompt
           isOpen={showTaskPrompt}
           onClose={() => setShowTaskPrompt(false)}
           standupEntry={currentEntry}
