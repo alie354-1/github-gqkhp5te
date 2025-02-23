@@ -443,25 +443,13 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="p-1 text-gray-400 hover:text-gray-500"
+                    className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                   >
-                    <Edit2 className="h-4 w-4" />
+                    <Edit2 className="h-3 w-3 mr-1" />
+                    Edit
                   </button>
                   {suggestedTask && onAddTask && (
                     <div className="flex space-x-2">
-                      <button
-                        onClick={() => {
-                          if (suggestedTask) {
-                            setIsEditing(true);
-                          } else {
-                            handleSave();
-                          }
-                        }}
-                        className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                      >
-                        <Edit2 className="h-3 w-3 mr-1" />
-                        Edit
-                      </button>
                       {suggestedTask && (
                         <button
                           onClick={() => onAddTask(task)}
