@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../lib/store';
+import { useAuthStore } from './lib/store';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { 
   LayoutDashboard,
