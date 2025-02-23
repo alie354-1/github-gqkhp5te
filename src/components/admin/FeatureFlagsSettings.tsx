@@ -90,51 +90,38 @@ export default function FeatureFlagsSettings() {
 
       console.log('Initial query result:', { data, error });
 
-      if (error) {
-        console.log('Attempting to create default flags...');
-        const defaultData = {
-          key: 'feature_flags',
-          value: defaultFeatureFlags,
-          updated_at: new Date().toISOString()
-        };
-        
-        const { data: insertData, error: insertError } = await supabase
+      if (error && error.code === 'PGRST116') {
+        // Record not found, create default flags
+        console.log('Creating default flags...');
+        const { error: insertError } = await supabase
           .from('app_settings')
-          .insert([defaultData])
-          .select()
-          .single();
+          .insert({
+            key: 'feature_flags',
+            value: defaultFeatureFlags,
+            updated_at: new Date().toISOString()
+          });
 
         if (insertError) {
-          console.error('Failed to create default flags:', insertError);
-          throw new Error(`Failed to create default flags: ${insertError.message}`);
+          console.error('Error creating default flags:', insertError);
+          setError('Failed to create default flags');
         }
-
-        console.log('Successfully created default flags:', insertData);
+        
+        setFlags(defaultFeatureFlags);
+        setFeatureFlags(defaultFeatureFlags);
+        return;
+      } else if (error) {
+        console.error('Error fetching flags:', error);
+        setError('Failed to load feature flags');
         setFlags(defaultFeatureFlags);
         setFeatureFlags(defaultFeatureFlags);
         return;
       }
 
-      try {
-        if (!data?.value) {
-          console.log('No feature flags data found, using defaults');
-          setFlags(defaultFeatureFlags);
-          setFeatureFlags(defaultFeatureFlags);
-          return;
-        }
-
-        const parsedFlags = typeof data.value === 'string' ? 
-          JSON.parse(data.value) : data.value;
-        
-        console.log('Setting feature flags:', parsedFlags);
-        setFlags(parsedFlags);
-        setFeatureFlags(parsedFlags);
-      } catch (err) {
-        console.error('Error parsing feature flags:', err);
-        setError('Error loading feature flags');
-        setFlags(defaultFeatureFlags);
-        setFeatureFlags(defaultFeatureFlags);
-      }
+      // Successfully retrieved flags
+      const flagData = data.value || defaultFeatureFlags;
+      console.log('Setting flags:', flagData);
+      setFlags(flagData);
+      setFeatureFlags(flagData);
 
       if (error) {
         if (error.code === 'PGRST116') {
