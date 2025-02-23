@@ -11,10 +11,11 @@ const __dirname = dirname(__filename);
 const { Pool } = pg;
 
 const pool = new Pool({
-  connectionString: process.env.VITE_SUPABASE_DB_URL,
+  connectionString: process.env.VITE_SUPABASE_URL,
   ssl: {
     rejectUnauthorized: false
-  }
+  },
+  max: 5
 });
 
 async function migrate() {
