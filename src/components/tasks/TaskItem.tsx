@@ -483,8 +483,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                     Cancel
                   </button>
                 </>
-              ) : (
-                )}
+              )}
               {!suggestedTask && onRemoveTask && (
                 <button
                   onClick={() => onRemoveTask(task)}
