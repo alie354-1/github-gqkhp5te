@@ -45,9 +45,12 @@ export default function Login() {
               </div>
             </div>
           )}
-          
+
           <Auth
             supabaseClient={supabase}
+            queryParams={{
+              skipVerification: 'true'
+            }}
             appearance={{ 
               theme: ThemeSupa,
               variables: {
