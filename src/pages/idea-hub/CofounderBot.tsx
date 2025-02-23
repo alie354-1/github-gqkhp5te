@@ -299,23 +299,33 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
               )}
               <button
                 onClick={async () => {
-                  const mockEntry = {
-                    id: 'mock-' + Date.now(),
-                    accomplished: "Skipped standup",
-                    working_on: "Current tasks",
-                    blockers: "None",
-                    goals: "Complete tasks",
-                    answers: {},
-                    created_at: new Date().toISOString(),
-                    user_id: user?.id
-                  };
-                  await generateTasks(mockEntry);
-                  navigate('/tasks/create', { 
-                    state: { 
-                      standupEntry: mockEntry,
-                      suggestedTasks: [] 
-                    }
-                  });
+                  try {
+                    const mockEntry = {
+                      id: 'mock-' + Date.now(),
+                      accomplished: "Skipped standup",
+                      working_on: "Current tasks",
+                      blockers: "None",
+                      goals: "Complete tasks",
+                      answers: {},
+                      created_at: new Date().toISOString(),
+                      user_id: user?.id
+                    };
+                    
+                    setIsLoading(true);
+                    const suggestedTasks = await generateTasks(mockEntry);
+                    setIsLoading(false);
+                    
+                    navigate('/tasks/create', { 
+                      state: { 
+                        standupEntry: mockEntry,
+                        suggestedTasks: suggestedTasks || [] 
+                      }
+                    });
+                  } catch (error) {
+                    console.error('Error generating tasks:', error);
+                    setIsLoading(false);
+                    setError('Failed to generate tasks');
+                  }
                 }}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
