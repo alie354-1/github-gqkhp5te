@@ -4,20 +4,15 @@ import { Database } from './database.types';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Add pooling suffix to URL
-const poolUrl = supabaseUrl?.includes('pooler') ? supabaseUrl : supabaseUrl?.replace('.supabase.co', '-pooler.supabase.co');
-
-console.log('Using pooled connection:', poolUrl !== supabaseUrl);
-
-if (!poolUrl || !supabaseAnonKey) {
+if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Environment variables:', {
-    url: !!poolUrl,
+    url: !!supabaseUrl,
     key: !!supabaseAnonKey
   });
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient<Database>(poolUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
