@@ -200,12 +200,14 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
 
     try {
       // Generate AI feedback focused on current section
-      const { feedback, follow_up_questions } = await generateTasks({
+      const { tasks, feedback, follow_up_questions } = await generateTasks({
         accomplished: currentSection === 'accomplished' ? currentInput : currentEntry.accomplished,
         working_on: currentSection === 'working_on' ? currentInput : currentEntry.working_on,
         blockers: currentSection === 'blockers' ? currentInput : currentEntry.blockers,
         goals: currentSection === 'goals' ? currentInput : currentEntry.goals
       }, user?.id || '');
+
+      console.log('Generated tasks:', tasks);
 
       // Format feedback into a conversational response
       const formattedFeedback = `Here's my analysis:
