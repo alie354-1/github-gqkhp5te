@@ -4,22 +4,20 @@ import { Database } from './database.types';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key length:', supabaseAnonKey?.length);
+// Add pooling suffix to URL
+const poolUrl = supabaseUrl?.includes('pooler') ? supabaseUrl : supabaseUrl?.replace('.supabase.co', '-pooler.supabase.co');
 
-if (!supabaseUrl || !supabaseAnonKey) {
+console.log('Using pooled connection:', poolUrl !== supabaseUrl);
+
+if (!poolUrl || !supabaseAnonKey) {
   console.error('Environment variables:', {
-    url: !!supabaseUrl,
+    url: !!poolUrl,
     key: !!supabaseAnonKey
   });
   throw new Error('Missing Supabase environment variables');
 }
 
-if (!supabaseUrl.startsWith('https://')) {
-  throw new Error('Invalid Supabase URL format');
-}
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(poolUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
@@ -34,6 +32,21 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     headers: { 'x-application-name': 'startup-os' }
   }
 });
+
+// Test database connection and schema
+supabase.from('profiles').select('count', { count: 'exact', head: true })
+  .then(response => {
+    if (response.error) {
+      if (response.error.code === '42P01') {
+        console.error('Profiles table does not exist. Please run migrations.');
+      } else {
+        console.error('Database error:', response.error);
+      }
+    } else {
+      console.log('Database connection and schema verified successfully');
+    }
+  });
+
 
 // Log any auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
@@ -55,8 +68,3 @@ supabase.auth.onAuthStateChange((event, session) => {
       });
   }
 });
-
-// Test the connection
-supabase.from('profiles').select('count', { count: 'exact', head: true })
-  .then(() => console.log('Database connection successful'))
-  .catch(err => console.error('Database connection error:', err.message));
