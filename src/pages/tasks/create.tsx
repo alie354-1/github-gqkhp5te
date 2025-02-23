@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuthStore } from '../../lib/store';
@@ -20,14 +19,22 @@ export default function TaskCreate() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const [tasks, setTasks] = useState<Task[]>([{
-    title: 'New Task',
-    description: '',
-    priority: 'medium',
-    status: 'todo',
-    category: 'general',
-    due_date: new Date().toISOString().split('T')[0]
-  }]);
+  const { standupEntry, suggestedTasks } = location.state || {};
+  const [tasks, setTasks] = useState<Task[]>(suggestedTasks || [
+    {
+      title: 'New Task',
+      description: '',
+      priority: 'medium',
+      status: 'todo',
+      category: 'general',
+      due_date: new Date().toISOString().split('T')[0]
+    }
+  ]);
+
+  useEffect(() => {
+    console.log('Location state:', location.state);
+    console.log('Current tasks:', tasks);
+  }, [tasks]);
 
   const saveTasks = async () => {
     try {

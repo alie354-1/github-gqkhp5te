@@ -301,39 +301,49 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
               )}
               <button
                 onClick={async () => {
-                  const mockEntry = {
-                    id: 'mock-' + Date.now(),
-                    accomplished: "Skipped standup",
-                    working_on: "Current tasks",
-                    blockers: "None",
-                    goals: "Complete tasks",
-                    answers: {},
-                    created_at: new Date().toISOString(),
-                    user_id: user?.id
-                  };
-
-                  setIsLoading(true);
                   try {
-                    // Temporary mock tasks until API is properly set up
-                    const tasks = await generateTasks(mockEntry);
-                    console.log('Generated tasks:', tasks);
+                    const mockEntry = {
+                      id: 'mock-' + Date.now(),
+                      accomplished: "Skipped standup",
+                      working_on: "Current tasks",
+                      blockers: "None",
+                      goals: "Complete tasks",
+                      answers: {},
+                      created_at: new Date().toISOString(),
+                      user_id: user?.id
+                    };
+
+                    console.log('Starting task generation...');
+                    setIsLoading(true);
+
+                    const result = await generateTasks(mockEntry);
+                    console.log('Generated tasks result:', result);
+
+                    const tasks = result?.tasks || [
+                      {
+                        title: 'New Task',
+                        description: 'Add task description',
+                        priority: 'medium',
+                        status: 'todo',
+                        category: 'general',
+                        due_date: new Date().toISOString().split('T')[0]
+                      }
+                    ];
+
                     setIsLoading(false);
 
-                    if (tasks && tasks.length > 0) {
-                      navigate('/tasks/create', { 
-                        state: { 
-                          standupEntry: mockEntry,
-                          tasks: tasks
-                        }
-                      });
-                    } else {
-                      setError('No tasks were generated. Please try again.');
-                    }
+                    navigate('/tasks/create', { 
+                      state: { 
+                        standupEntry: mockEntry,
+                        suggestedTasks: tasks
+                      }
+                    });
                   } catch (error) {
                     console.error('Error:', error);
                     setError('Failed to generate tasks');
+                  } finally {
+                    setIsLoading(false);
                   }
-                  setIsLoading(false);
                 }}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
