@@ -10,8 +10,8 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: { id: '1', email: 'test@example.com' }, // Mock user data for auth bypass
-  profile: { id: '1', full_name: 'Test User', role: 'admin' }, // Mock profile data
+  user: { id: '38d3420e-3811-4ba2-82b1-934f79d5c44b', email: 'aliecohen@gmail.com' }, // Mock user data
+  profile: { id: '38d3420e-3811-4ba2-82b1-934f79d5c44b', full_name: 'Alie Cohen', role: 'admin' }, // Mock profile data
   isAdmin: true, // Set isAdmin to true for admin privileges
   signOut: async () => {
     set({ user: null, profile: null, isAdmin: false });
