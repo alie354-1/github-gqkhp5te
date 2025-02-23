@@ -84,30 +84,44 @@ export default function FeatureFlagsSettings() {
       // First try to get existing flags
       let { data, error } = await supabase
         .from('app_settings')
-        .select('value')
+        .select('*')
         .eq('key', 'feature_flags')
         .single();
 
+      console.log('Initial query result:', { data, error });
+
       if (error) {
-        console.log('Error fetching flags:', error);
-        // Create default flags if not found
+        console.log('Attempting to create default flags...');
+        const defaultData = {
+          key: 'feature_flags',
+          value: defaultFeatureFlags,
+          updated_at: new Date().toISOString()
+        };
+        
         const { data: insertData, error: insertError } = await supabase
           .from('app_settings')
-          .upsert({ 
-            key: 'feature_flags', 
-            value: defaultFeatureFlags,
-            updated_at: new Date().toISOString()
-          })
-          .select('value')
+          .insert([defaultData])
+          .select()
           .single();
 
         if (insertError) {
-          console.error('Error creating default flags:', insertError);
-          throw insertError;
+          console.error('Failed to create default flags:', insertError);
+          throw new Error(`Failed to create default flags: ${insertError.message}`);
         }
 
-        data = insertData;
+        console.log('Successfully created default flags:', insertData);
+        setFlags(defaultFeatureFlags);
+        setFeatureFlags(defaultFeatureFlags);
+        return;
       }
+
+      if (!data?.value) {
+        throw new Error('No feature flags data found');
+      }
+
+      console.log('Setting feature flags:', data.value);
+      setFlags(data.value);
+      setFeatureFlags(data.value);
 
       if (error) {
         if (error.code === 'PGRST116') {
