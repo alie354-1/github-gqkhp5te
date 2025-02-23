@@ -161,22 +161,24 @@ export default function Layout() {
         )}
       </Link>
     );
-            <Tooltip.Trigger asChild>
-              <div className="flex items-center px-2 py-2 text-sm font-medium text-gray-400 cursor-not-allowed rounded-md group">
-                <item.icon className="h-5 w-5 mr-3" />
-                {item.name}
-                <Construction className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-              <Tooltip.Content
-                className="bg-gray-900 text-white px-3 py-1.5 rounded text-sm"
-                sideOffset={5}
-              >
-                Coming Soon
-                <Tooltip.Arrow className="fill-gray-900" />
-              </Tooltip.Content>
-            </Tooltip.Portal>
+            <>
+              <Tooltip.Trigger asChild>
+                <div className="flex items-center px-2 py-2 text-sm font-medium text-gray-400 cursor-not-allowed rounded-md group">
+                  <item.icon className="h-5 w-5 mr-3" />
+                  {item.name}
+                  <Construction className="h-4 w-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content
+                  className="bg-gray-900 text-white px-3 py-1.5 rounded text-sm"
+                  sideOffset={5}
+                >
+                  Coming Soon
+                  <Tooltip.Arrow className="fill-gray-900" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </>
           </Tooltip.Root>
         </Tooltip.Provider>
       );
