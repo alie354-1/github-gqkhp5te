@@ -12,9 +12,13 @@ export default function Login() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (user) {
-      navigate('/dashboard');
-    }
+    const checkAndRedirect = async () => {
+      if (user) {
+        console.log('Redirecting to dashboard...');
+        await navigate('/dashboard', { replace: true });
+      }
+    };
+    checkAndRedirect();
   }, [user, navigate]);
 
   return (
