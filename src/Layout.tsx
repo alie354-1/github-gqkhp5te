@@ -131,7 +131,7 @@ export default function Layout() {
     { name: 'Idea Hub', href: '/idea-hub', icon: Lightbulb, featureFlag: 'ideaHub' },
     { name: 'Finance Hub', href: '#', icon: PiggyBank, featureFlag: 'financeHub' },
     { name: 'Settings', href: '/profile', icon: Settings, featureFlag: 'settings', children: [
-      ...(isAdmin ? [{ name: 'Admin Panel', href: '/admin', icon: Shield, featureFlag: 'adminPanel' }] : [])
+      { name: 'Admin Panel', href: '/admin', icon: Shield, featureFlag: 'adminPanel' }
     ]},
   ];
 
