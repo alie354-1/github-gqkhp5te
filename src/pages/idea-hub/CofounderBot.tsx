@@ -315,36 +315,20 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                   setIsLoading(true);
                   try {
                     // Temporary mock tasks until API is properly set up
-                    const suggestedTasks = [
-                      {
-                        id: 'task-1',
-                        title: 'Review current sprint goals',
-                        description: 'Review and align with sprint objectives',
-                        priority: 'medium',
-                        status: 'pending',
-                        category: 'planning',
-                        task_type: 'task',
-                        estimated_hours: 1,
-                        due_date: new Date().toISOString().split('T')[0]
-                      },
-                      {
-                        id: 'task-2',
-                        title: 'Update project documentation',
-                        description: 'Ensure all documentation is current',
-                        priority: 'medium',
-                        status: 'pending',
-                        category: 'documentation',
-                        task_type: 'task',
-                        estimated_hours: 2,
-                        due_date: new Date().toISOString().split('T')[0]
-                      }
-                    ];
-                    navigate('/tasks/create', { 
-                      state: { 
-                        standupEntry: mockEntry,
-                        suggestedTasks: suggestedTasks || [] 
-                      }
-                    });
+                    const tasks = await generateTasks(mockEntry);
+                    console.log('Generated tasks:', tasks);
+                    setIsLoading(false);
+
+                    if (tasks && tasks.length > 0) {
+                      navigate('/tasks/create', { 
+                        state: { 
+                          standupEntry: mockEntry,
+                          tasks: tasks
+                        }
+                      });
+                    } else {
+                      setError('No tasks were generated. Please try again.');
+                    }
                   } catch (error) {
                     console.error('Error:', error);
                     setError('Failed to generate tasks');
