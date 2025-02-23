@@ -446,17 +446,17 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   </button>
                 </div>
               )}
-              {suggestedTask && onAddTask && isEditing && (
+              {isEditing ? (
                 <>
                   <button
                     onClick={() => {
-                      onAddTask(editedTask);
+                      suggestedTask ? onAddTask(editedTask) : handleSave();
                       setIsEditing(false);
                     }}
                     className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 mr-2"
                   >
-                    <Plus className="h-3 w-3 mr-1" />
-                    Save & Add
+                    {suggestedTask ? <Plus className="h-3 w-3 mr-1" /> : <Save className="h-3 w-3 mr-1" />}
+                    {suggestedTask ? 'Save & Add' : 'Save'}
                   </button>
                   <button
                     onClick={() => setIsEditing(false)}
@@ -466,8 +466,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                     Cancel
                   </button>
                 </>
-              )}
-              {!isEditing && (
+              ) : (
                 <button
                   onClick={() => setIsEditing(true)}
                   className="p-1 text-gray-400 hover:text-gray-500"
