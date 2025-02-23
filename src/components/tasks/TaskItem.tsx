@@ -429,7 +429,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
                 {task.priority}
               </span>
-              {suggestedTask && onAddTask && !isEditing && (
+              {!isEditing && (
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setIsEditing(true)}
@@ -437,13 +437,15 @@ const TaskItem: React.FC<TaskItemProps> = ({
                   >
                     <Edit2 className="h-4 w-4" />
                   </button>
-                  <button
-                    onClick={() => onAddTask(task)}
-                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-                  >
-                    <Plus className="h-3 w-3 mr-1" />
-                    Add
-                  </button>
+                  {suggestedTask && onAddTask && (
+                    <button
+                      onClick={() => onAddTask(task)}
+                      className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Add
+                    </button>
+                  )}
                 </div>
               )}
               {isEditing ? (
