@@ -445,7 +445,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                     <Plus className="h-3 w-3 mr-1" />
                     Add
                   </button>
-                </>
+                </div>
               )}
               {suggestedTask && onAddTask && isEditing && (
                 <>
