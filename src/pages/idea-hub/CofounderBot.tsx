@@ -298,15 +298,24 @@ ${feedback.strategic_recommendations.map(r => `• ${r}`).join('\n')}` : ''}`;
                 </button>
               )}
               <button
-                onClick={() => {
+                onClick={async () => {
                   const mockEntry = {
+                    id: 'mock-' + Date.now(),
                     accomplished: "Skipped standup",
                     working_on: "Current tasks",
                     blockers: "None",
                     goals: "Complete tasks",
-                    answers: {}
+                    answers: {},
+                    created_at: new Date().toISOString(),
+                    user_id: user?.id
                   };
-                  navigate('/tasks/create', { state: { standupEntry: mockEntry } });
+                  await generateTasks(mockEntry);
+                  navigate('/tasks/create', { 
+                    state: { 
+                      standupEntry: mockEntry,
+                      suggestedTasks: [] 
+                    }
+                  });
                 }}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
