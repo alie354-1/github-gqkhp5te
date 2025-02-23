@@ -434,7 +434,6 @@ const TaskItem: React.FC<TaskItemProps> = ({
                 </button>
               )}
             </div>
-            </button>
 
             <div className="flex items-center space-x-2">
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
