@@ -30,17 +30,26 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 // Test database connection and schema
+console.log('Testing Supabase connection...');
+console.log('Database URL format:', supabaseUrl?.split('@')[1] || 'Not found');
+
 supabase.from('profiles').select('count', { count: 'exact', head: true })
   .then(response => {
     if (response.error) {
+      console.error('Database connection test failed:');
+      console.error('Error code:', response.error.code);
+      console.error('Error message:', response.error.message);
+      console.error('Error details:', response.error.details);
       if (response.error.code === '42P01') {
-        console.error('Profiles table does not exist. Please run migrations.');
-      } else {
-        console.error('Database error:', response.error);
+        console.error('Profiles table does not exist - migrations need to be run');
       }
     } else {
       console.log('Database connection and schema verified successfully');
+      console.log('Response:', response);
     }
+  })
+  .catch(err => {
+    console.error('Connection error:', err);
   });
 
 
