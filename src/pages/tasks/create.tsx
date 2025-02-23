@@ -1,146 +1,183 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
-import { useAuthStore } from '../../lib/store';
-import { Plus } from 'lucide-react';
+import { Clock, ChevronDown, PenSquare, Trash2, Info, RotateCw, Book, LightbulbIcon } from 'lucide-react';
 
 interface Task {
-  id?: string;
   title: string;
   description: string;
-  priority: 'low' | 'medium' | 'high';
-  status: 'todo';
-  category: string;
+  type: string;
+  category?: string;
+  priority: 'high' | 'medium' | 'low';
   due_date: string;
-  user_id?: string;
+  estimated_time?: string;
 }
 
 export default function TaskCreate() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
-  const { standupEntry, suggestedTasks } = location.state || {};
-  const [tasks, setTasks] = useState<Task[]>(suggestedTasks || [
+  const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
+  const [suggestedTasks, setSuggestedTasks] = useState<Task[]>([
     {
-      title: 'New Task',
-      description: '',
-      priority: 'medium',
-      status: 'todo',
-      category: 'general',
-      due_date: new Date().toISOString().split('T')[0]
+      title: "Improve Task Description",
+      description: "Provide more detailed descriptions of your tasks, challenges, and goals in your standup updates to communicate your progress and needs more effectively",
+      type: "Process Improvement",
+      priority: "high",
+      due_date: "2023-02-23",
+      estimated_time: "1h"
+    },
+    {
+      title: "Break Down Large Tasks",
+      description: "Break down your tasks into smaller, more manageable steps to reduce overwhelm and increase productivity",
+      type: "Planning",
+      priority: "medium",
+      due_date: "2023-02-23",
+      estimated_time: "2h"
     }
   ]);
 
-  useEffect(() => {
-    console.log('Location state:', location.state);
-    console.log('Current tasks:', tasks);
-  }, [tasks]);
-
-  const saveTasks = async () => {
-    try {
-      const { error } = await supabase
-        .from('tasks')
-        .insert(tasks.map(task => ({
-          ...task,
-          user_id: user?.id
-        })));
-
-      if (error) throw error;
-      navigate('/tasks');
-    } catch (error) {
-      console.error('Error saving tasks:', error);
-    }
+  const handleAddTask = (task: Task) => {
+    setSelectedTasks([...selectedTasks, task]);
   };
 
-  const updateTask = (index: number, field: keyof Task, value: string) => {
-    const newTasks = [...tasks];
-    newTasks[index] = { ...newTasks[index], [field]: value };
-    setTasks(newTasks);
+  const handleRemoveTask = (index: number) => {
+    setSelectedTasks(selectedTasks.filter((_, i) => i !== index));
   };
 
-  const addNewTask = () => {
-    setTasks([...tasks, {
-      title: 'New Task',
-      description: '',
-      priority: 'medium',
-      status: 'todo',
-      category: 'general',
-      due_date: new Date().toISOString().split('T')[0]
-    }]);
+  const handleRegenerateTasks = async () => {
+    // Implement task regeneration logic
+    console.log("Regenerating tasks...");
+  };
+
+  const handleSaveTasks = async () => {
+    // Implement save tasks logic
+    console.log("Saving tasks...", selectedTasks);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Create Tasks</h1>
-        <div className="space-x-4">
-          <button
-            onClick={addNewTask}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Task
-          </button>
-          <button
-            onClick={saveTasks}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
-          >
-            Save All Tasks
-          </button>
-        </div>
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Create Tasks</h1>
+        <button
+          onClick={handleSaveTasks}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+        >
+          + Save Tasks
+        </button>
       </div>
 
-      <div className="space-y-6">
-        {tasks.map((task, index) => (
-          <div key={index} className="bg-white shadow rounded-lg p-6">
-            <div className="grid grid-cols-1 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Title</label>
-                <input
-                  type="text"
-                  value={task.title}
-                  onChange={(e) => updateTask(index, 'title', e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
+      {selectedTasks.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Selected Tasks</h2>
+          <div className="space-y-4">
+            {selectedTasks.map((task, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow border hover:border-indigo-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <ChevronDown className="h-5 w-5 text-gray-400" />
+                    <div>
+                      <h3 className="font-medium">{task.title}</h3>
+                      <p className="text-sm text-gray-500">
+                        Type: {task.type} • Due: {task.due_date}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      task.priority === 'high' ? 'bg-red-100 text-red-800' :
+                      task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {task.priority}
+                    </span>
+                    <button onClick={() => handleRemoveTask(index)}>
+                      <Trash2 className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                    </button>
+                    <PenSquare className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                    <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                  </div>
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  value={task.description}
-                  onChange={(e) => updateTask(index, 'description', e.target.value)}
-                  rows={3}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-              </div>
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">AI-Generated Task Suggestions</h2>
+          <button
+            onClick={handleRegenerateTasks}
+            className="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100"
+          >
+            <RotateCw className="h-4 w-4 mr-2" />
+            Regenerate
+          </button>
+        </div>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Priority</label>
-                  <select
-                    value={task.priority}
-                    onChange={(e) => updateTask(index, 'priority', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        <div className="space-y-4">
+          {suggestedTasks.map((task, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow border hover:border-indigo-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4">
+                  <ChevronDown className="h-5 w-5 text-gray-400" />
+                  <h3 className="font-medium">{task.title}</h3>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    task.priority === 'high' ? 'bg-red-100 text-red-800' :
+                    task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {task.priority}
+                  </span>
+                  <button
+                    onClick={() => handleAddTask(task)}
+                    className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100"
                   >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
+                    + Add
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-gray-600 mb-4">{task.description}</p>
+
+              <div className="text-sm text-gray-500 mb-4">
+                Type: {task.type} • Category: {task.category} • Estimated: {task.estimated_time} • Due: {task.due_date}
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                    <LightbulbIcon className="h-4 w-4 mr-2" />
+                    Implementation Tips
+                  </div>
+                  <div className="pl-6">
+                    <ul className="list-disc text-sm text-gray-600">
+                      <li>Use task tracking tools to keep track of your work</li>
+                      <li>Consider using the SMART goal framework when setting tasks</li>
+                    </ul>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Due Date</label>
-                  <input
-                    type="date"
-                    value={task.due_date}
-                    onChange={(e) => updateTask(index, 'due_date', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  />
+                  <div className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                    <Book className="h-4 w-4 mr-2" />
+                    Helpful Resources
+                  </div>
+                  <div className="pl-6">
+                    <a href="#" className="text-indigo-600 hover:text-indigo-800 text-sm flex items-center">
+                      How to Give an Effective Stand-up Update
+                      <svg className="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
